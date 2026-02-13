@@ -110,7 +110,7 @@ def main() -> None:
         seed=2001,  # Seed diferente para variación
         num_inference_steps=40,
         guidance_scale=3.5,
-        strength=0.85,  # Mantener algo de la imagen original
+        image_prompt_strength=0.15,  # Baja adherencia para permitir cambio de perspectiva
     )
 
     # Calcular costo estimado

@@ -23,17 +23,17 @@ class GenerationConfig:
         num_inference_steps: Pasos de inferencia del modelo.
         guidance_scale: Escala de guía para adherencia al prompt.
         seed: Semilla para reproducibilidad.
-        enable_safety_checker: Si activar el filtro de seguridad.
+        safety_tolerance: Nivel de tolerancia del filtro de seguridad (1-6, 6=más permisivo).
         cost_per_image_usd: Costo estimado por imagen en USD.
     """
 
-    model_id: str = "fal-ai/flux/dev"
+    model_id: str = "fal-ai/flux-pro/v1.1-ultra"
     image_size: str = "landscape_16_9"
     num_inference_steps: int = 28
     guidance_scale: float = 3.5
     seed: int = 1001
-    enable_safety_checker: bool = False
-    cost_per_image_usd: float = 0.025
+    safety_tolerance: int = 6
+    cost_per_image_usd: float = 0.06
 
 
 @dataclass(frozen=True)
@@ -44,19 +44,21 @@ class ImageToImageConfig:
         model_id: Identificador del modelo en Fal.ai.
         num_inference_steps: Pasos de inferencia del modelo.
         guidance_scale: Escala de guía para adherencia al prompt.
-        strength: Fuerza de transformación (0.0-1.0). Mayor = más cambio.
+        image_prompt_strength: Fuerza de adherencia a la imagen de referencia (0.0-1.0).
+                               Valores bajos (0.1) = más libertad creativa.
+                               Valores altos (0.5+) = más fidelidad a la imagen original.
         seed: Semilla para reproducibilidad.
-        enable_safety_checker: Si activar el filtro de seguridad.
+        safety_tolerance: Nivel de tolerancia del filtro de seguridad (1-6, 6=más permisivo).
         cost_per_image_usd: Costo estimado por imagen en USD.
     """
 
-    model_id: str = "fal-ai/flux/dev/image-to-image"
+    model_id: str = "fal-ai/flux-pro/v1.1-ultra"
     num_inference_steps: int = 40
     guidance_scale: float = 3.5
-    strength: float = 0.95
+    image_prompt_strength: float = 0.1
     seed: int = 1001
-    enable_safety_checker: bool = False
-    cost_per_image_usd: float = 0.025
+    safety_tolerance: int = 6
+    cost_per_image_usd: float = 0.06
 
 
 def get_account_usage(limit: int = 10) -> dict:
@@ -181,7 +183,7 @@ def generate_pain_stimulus(
             "num_inference_steps": config.num_inference_steps,
             "guidance_scale": config.guidance_scale,
             "seed": config.seed,
-            "enable_safety_checker": config.enable_safety_checker,
+            "safety_tolerance": config.safety_tolerance,
             "num_images": 1,
             "output_format": "jpeg",
         },
@@ -251,11 +253,11 @@ def transform_image_perspective(
         arguments={
             "image_url": image_url,
             "prompt": prompt,
-            "strength": config.strength,
+            "image_prompt_strength": config.image_prompt_strength,
             "num_inference_steps": config.num_inference_steps,
             "guidance_scale": config.guidance_scale,
             "seed": config.seed,
-            "enable_safety_checker": config.enable_safety_checker,
+            "safety_tolerance": config.safety_tolerance,
             "num_images": 1,
             "output_format": "jpeg",
         },

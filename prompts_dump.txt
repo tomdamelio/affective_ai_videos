@@ -1,0 +1,32 @@
+Unique_Img_ID        | AUTO_PROMPT (First 80 chars)                                                    
+----------------------------------------------------------------------------------------------------
+S01_3P_Start         | Photorealistic, 3rd Person perspective. A 20-year-old Female, bare right foot is
+S01_3P_EndP          | Photorealistic, 3rd Person perspective, low angle. A 20-year-old Female, anatomi
+S01_3P_EndC          | Photorealistic, 3rd Person perspective. A 20-year-old Female, bare right foot is
+S01_POV_Start        | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is restin
+S01_POV_EndP         | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is positi
+S01_POV_EndC         | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is restin
+S11_3P_Start         | Photorealistic, 3rd Person perspective. A 40-year-old Male, left foot is resting
+S11_3P_EndP          | Photorealistic, 3rd Person perspective. A 40-year-old Male, perfectly rendered l
+S11_3P_EndC          | Photorealistic, 3rd Person perspective. A 40-year-old Male, left foot is resting
+S11_POV_Start        | Photorealistic, POV perspective. A 40-year-old Male, left foot is resting natura
+S11_POV_EndP         | Photorealistic, POV perspective. A 40-year-old Male, left foot is subjected to a
+S11_POV_EndC         | Photorealistic, POV perspective. A 40-year-old Male, left foot is resting safely
+S13_3P_Start         | Photorealistic, 3rd Person perspective. A 20-year-old Male, bare right foot is s
+S13_3P_EndP          | Photorealistic, 3rd Person perspective, floor-level view. A 20-year-old Male bar
+S13_3P_EndC          | Photorealistic, 3rd Person perspective. A 20-year-old Male, bare right foot is r
+S13_POV_Start        | Photorealistic, POV perspective. A 20-year-old Male, bare right foot is suspende
+S13_POV_EndP         | Photorealistic, POV perspective. A 20-year-old Male, bare right foot is stepping
+S13_POV_EndC         | Photorealistic, POV perspective. A 20-year-old Male, bare right foot is resting 
+S17_3P_Start         | Photorealistic, 3rd Person perspective. A 40-year-old Female, bare foot is hover
+S17_3P_EndP          | Photorealistic, 3rd Person perspective. A 40-year-old Female bare foot, clearly 
+S17_3P_EndC          | Photorealistic, 3rd Person perspective. A 40-year-old Female, bare foot is resti
+S17_POV_Start        | Photorealistic, POV perspective. A 40-year-old Female, bare foot is hovering sus
+S17_POV_EndP         | Photorealistic, POV perspective. A 40-year-old Female, bare foot is wedged forci
+S17_POV_EndC         | Photorealistic, POV perspective. A 40-year-old Female, bare foot is resting safe
+S32_3P_Start         | Photorealistic, 3rd Person perspective. A 20-year-old Female, bare right foot is
+S32_3P_EndP          | Photorealistic, 3rd Person perspective. A 20-year-old Female bare right foot wit
+S32_3P_EndC          | Photorealistic, 3rd Person perspective. A 20-year-old Female, bare right foot is
+S32_POV_Start        | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is restin
+S32_POV_EndP         | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is extend
+S32_POV_EndC         | Photorealistic, POV perspective. A 20-year-old Female, bare right foot is positi

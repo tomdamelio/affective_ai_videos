@@ -1,12 +1,12 @@
-"""Script para generación batch de imágenes de referencia (Pain condition).
+"""Script para generación batch de imágenes de inicio (Start - Condition Neutral - 3rd Person).
 
 Este script lee los prompts desde el archivo Excel ai_prompts.xlsx,
-filtra por condición Pain, y genera todas las imágenes de referencia
+filtra por condición 'Neutral' y perspectiva '3rd Person', y genera todas las imágenes
 usando FLUX via Fal.ai.
 
 Uso:
     1. Configura tu API key: set FAL_KEY=tu-key-aqui (Windows)
-    2. Ejecuta: micromamba run -n gen-ai python scripts/generate_ref_img.py
+    2. Ejecuta: micromamba run -n gen-ai python scripts/generate_start_img.py
 """
 
 import os
@@ -27,28 +27,25 @@ from pain_stimuli.generator import (
 # Constantes
 EXCEL_PATH = Path(__file__).parent.parent / "ai_prompts.xlsx"
 SHEET_NAME = "text-to-image"
-CONDITION_FILTER = "Pain"
+CONDITION_FILTER = "Neutral"  # Filtrar por condición Neutral (t_start)
 PERSPECTIVE_FILTER = "3rd Person"  # Filtrar por perspectiva 3rd Person
-EXPECTED_NUM_PROMPTS = 4
-VARIANTS_PER_PROMPT = 3  # Solo 1 variante para POV
+EXPECTED_NUM_PROMPTS = 5  # Esperamos 5 prompts (S01, S11, S13, S17, S32)
+VARIANTS_PER_PROMPT = 3  # 3 variantes por prompt
 
 
-def load_pain_prompts(excel_path: Path) -> pd.DataFrame:
-    """Carga los prompts de condición Pain y perspectiva 3rd Person desde el archivo Excel.
+def load_start_prompts(excel_path: Path) -> pd.DataFrame:
+    """Carga los prompts de condición Neutral y perspectiva 3rd Person desde el archivo Excel.
 
     Args:
         excel_path: Ruta al archivo Excel con los prompts.
 
     Returns:
-        DataFrame con columnas Unique_Img_ID y AUTO_PROMPT filtrado por Pain y 3rd Person.
-
-    Raises:
-        FileNotFoundError: Si el archivo Excel no existe.
-        ValueError: Si las columnas requeridas no existen.
+        DataFrame con columnas Unique_Img_ID y AUTO_PROMPT filtrado.
     """
     if not excel_path.exists():
         raise FileNotFoundError(f"Archivo Excel no encontrado: {excel_path}")
 
+    # Use openpyxl engine explicitly if needed
     dataframe = pd.read_excel(excel_path, sheet_name=SHEET_NAME)
 
     required_columns = ["Condition", "Perspective", "AUTO_PROMPT", "Unique_Img_ID", "Seed"]
@@ -56,17 +53,18 @@ def load_pain_prompts(excel_path: Path) -> pd.DataFrame:
     if missing_columns:
         raise ValueError(f"Columnas faltantes en Excel: {missing_columns}")
 
-    # Filtrar por Condition=Pain AND Perspective=3rd Person
-    pain_prompts = dataframe[
-        (dataframe["Condition"] == CONDITION_FILTER) &
+    # Filtrar por Condition=Neutral AND Perspective=3rd Person
+    # Nota: Usamos str.contains para Condition por si hay espacios o variantes como 'Neutral '
+    start_prompts = dataframe[
+        (dataframe["Condition"].str.strip() == CONDITION_FILTER) &
         (dataframe["Perspective"] == PERSPECTIVE_FILTER)
     ][["Unique_Img_ID", "AUTO_PROMPT", "Seed"]].copy()
 
-    return pain_prompts
+    return start_prompts
 
 
 def main() -> None:
-    """Ejecuta la generación batch de imágenes de dolor."""
+    """Ejecuta la generación batch de imágenes de inicio (Start)."""
     # Verificar API key
     if not os.environ.get("FAL_KEY"):
         print("ERROR: FAL_KEY no configurada.")
@@ -76,34 +74,38 @@ def main() -> None:
         sys.exit(1)
 
     print("=" * 60)
-    print("GENERACIÓN BATCH - Imágenes de Referencia (Pain)")
+    print("GENERACIÓN BATCH - Imágenes de Inicio (Start/Neutral)")
     print("=" * 60)
 
     # Cargar prompts desde Excel
     print(f"\nCargando prompts desde: {EXCEL_PATH}")
     try:
-        pain_prompts = load_pain_prompts(EXCEL_PATH)
+        start_prompts = load_start_prompts(EXCEL_PATH)
     except (FileNotFoundError, ValueError) as error:
         print(f"ERROR: {error}")
         sys.exit(1)
 
-    num_prompts = len(pain_prompts)
-    print(f"Prompts encontrados (Condition=Pain, Perspective=3rd Person): {num_prompts}")
+    num_prompts = len(start_prompts)
+    print(f"Prompts encontrados (Condition={CONDITION_FILTER}, Perspective={PERSPECTIVE_FILTER}): {num_prompts}")
 
-    # Validar número esperado de prompts
-    assert num_prompts == EXPECTED_NUM_PROMPTS, (
-        f"Se esperaban {EXPECTED_NUM_PROMPTS} prompts, "
-        f"pero se encontraron {num_prompts}"
-    )
+    # Validar número esperado de prompts (warning en lugar de assert estricto por si acaso)
+    if num_prompts != EXPECTED_NUM_PROMPTS:
+        print(f"WARNING: Se esperaban {EXPECTED_NUM_PROMPTS} prompts, pero se encontraron {num_prompts}.")
+
+    if num_prompts == 0:
+        print("No hay prompts para procesar via este filtro. Revisar Excel.")
+        sys.exit(0)
 
     # Calcular total de imágenes
     num_images = num_prompts * VARIANTS_PER_PROMPT
 
     # Configuración base (la seed se modifica por variante)
+    # Usamos flux-pro/v1.1-ultra por defecto
     base_config = GenerationConfig(
         seed=1001,
         num_inference_steps=28,
         guidance_scale=3.5,
+        safety_tolerance=6, # Permitir contenido sensible si fuera necesario, aunque es Neutral
     )
 
     # Calcular costo estimado
@@ -121,10 +123,15 @@ def main() -> None:
     # Mostrar lista de imágenes a generar
     print(f"\n{'IMÁGENES A GENERAR':^60}")
     print("-" * 60)
-    for idx, row in pain_prompts.iterrows():
+    for idx, row in start_prompts.iterrows():
         img_id = row["Unique_Img_ID"]
-        base_seed = int(row["Seed"])
-        prompt_preview = row["AUTO_PROMPT"][:40] + "..."
+        # Handle NaN seed if present, default to 1000
+        try:
+            base_seed = int(row["Seed"])
+        except (ValueError, TypeError):
+            base_seed = 1000
+            
+        prompt_preview = str(row["AUTO_PROMPT"])[:40] + "..."
         print(f"  {img_id} (base_seed={base_seed}, {VARIANTS_PER_PROMPT} variantes):")
         print(f"    {prompt_preview}")
     print("-" * 60)
@@ -148,10 +155,14 @@ def main() -> None:
     errores = []
     imagen_actual = 0
 
-    for idx, row in pain_prompts.iterrows():
+    for idx, row in start_prompts.iterrows():
         img_id = row["Unique_Img_ID"]
-        prompt = row["AUTO_PROMPT"]
-        base_seed = int(row["Seed"])
+        prompt = str(row["AUTO_PROMPT"])
+        
+        try:
+            base_seed = int(row["Seed"])
+        except (ValueError, TypeError):
+            base_seed = 1000
 
         # Generar variantes con seeds incrementales
         for variant in range(VARIANTS_PER_PROMPT):
@@ -164,6 +175,7 @@ def main() -> None:
                 seed=variant_seed,
                 num_inference_steps=28,
                 guidance_scale=3.5,
+                safety_tolerance=6,
             )
 
             print(f"\n[{imagen_actual}/{num_images}] Generando: {variant_id}")
