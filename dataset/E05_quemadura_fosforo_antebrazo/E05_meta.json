@@ -1,0 +1,93 @@
+{
+  "id": "E05",
+  "slug": "quemadura_fosforo_antebrazo",
+  "name": "E05_quemadura_fosforo_antebrazo",
+  "epss_pair": "58",
+  "epss_pair_estado": "OJO: E05 fue RE-DEFINIDO el 2026-06-14 y YA NO sigue el contenido del par EPSS-Limb 58 (que es punzante/tijera). Tras descartar con Tomas todas las candidatas de dolor punzante (tijera cortando piel y cuchillo Tramontina clavado, todas poco realistas con Kontext), el estimulo se cambio a una QUEMADURA: un fosforo encendido apoyado sobre la piel, apenas quemada. La columna epss_pair queda en 58 por trazabilidad del slot, pero el contenido es una quemadura custom (off-roster). SOLAPAMIENTO: pisa el concepto de E14 del roster (par 53, quemadura_fosforo); revisar/reconciliar E14 y la cuota de quemadura del roster con Tomas/Mariana.",
+  "categoria": "quemadura",
+  "descripcion": "Antebrazo; dolor: fosforo encendido apoyado sobre la piel, quemadura leve; control: pincel de maquillaje suave apoyado en la misma posicion, sin danar",
+  "fuente": "Custom (off-roster). El INICIO (antebrazo limpio) y el CONTROL (pincel) provienen de la cadena EPSS-58 original (derivados por Kontext del primer dolor de tijera s21), pero el DOLOR final es un fosforo encendido derivado por Kontext sobre ese mismo inicio limpio. Todos los stills comparten el mismo antebrazo/encuadre/luz.",
+  "creado": "2026-06-14",
+  "modificado": "2026-06-14",
+  "estado": "completo",
+  "historia": "Primera version (2026-06-14, sesion temprana): dolor = punta de tijera presionando el antebrazo (flux/dev seed 21); se completo el pipeline entero incluidos videos SIN validar con Tomas -> rechazado por Tomas (no se valido la imagen de dolor antes de avanzar; ademas el dolor debia ser una tijera CORTANDO piel). Segunda iteracion: 8 candidatas flux/dev de tijera cortando piel -> todas rechazadas (poco reales). Tercera: derivar el dolor desde clean.jpg con Kontext = puñal clavado (5 variantes) -> rechazadas (irreales). Cuarta: cuchillo Tramontina clavado (6 variantes) -> rechazadas (Kontext 'pega' el cuchillo flotando + sangre tipo ketchup; no integra penetracion). Quinta (ACEPTADA): fosforo encendido apoyado sobre la piel, quemadura leve (6 variantes); Tomas eligio la #2 'flame' (llama viva, quemadura minima).",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "fotogramas extraidos de los videos (dolor, control)",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "flujo": "Inicio = antebrazo limpio (Kontext 'clean' sobre el dolor de tijera s21 original). Control = pincel de maquillaje suave agregado por Kontext (misma pose). Dolor = fosforo encendido apoyado, derivado por Kontext SOBRE clean.jpg (asi los 3 stills comparten el mismo antebrazo pixel-consistente). El dolor NO se genero desde cero con flux/dev: se eligio derivar de clean.jpg para conservar el inicio y el control que Tomas ya habia validado.",
+  "resolucion_nota": "Los 3 stills son 1024x576 (el dolor es una edicion Kontext de 1024x576; inicio y control idem). Sin reescalado.",
+  "images": {
+    "dolor": {
+      "archivo": "images/E05_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: fosforo encendido INVERTIDO (cabeza encendida apuntando hacia abajo, en contacto directo con la piel del antebrazo), llama en el punto de contacto y leve humo, piel apenas quemada (marca de quemadura leve) en el centro, sin herida ni sangre",
+      "objeto_modelo": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "variante_script": "derive_variant.py control (ruta reutilizada; salida cp a candidates/e05m2_mark.jpg y luego a selected/e05_dolor_match_mark.jpg)",
+        "seed": 64,
+        "guidance_scale": 3.4,
+        "steps": 30,
+        "anchor": "work/E05_quemadura_fosforo_antebrazo/candidates/clean.jpg (el INICIO limpio)",
+        "archivo_work": "work/E05_quemadura_fosforo_antebrazo/selected/e05_dolor_match_mark.jpg",
+        "prompt": "Edit this photograph into a photorealistic image: a lit wooden match held upside down with its burning head pressed DOWN against the bare forearm skin at the center, a small flame at the contact curling upward around the stick, thin smoke. The wooden stick rises straight up out of the frame. A small light burn mark forms where the head touches - a faint reddened spot with a slightly pale scorched center, mild and shallow, no open wound, no blood. Photorealistic, realistic flame and lighting. Keep EVERYTHING else exactly the same: same forearm, position, framing, camera angle, lighting and background.",
+        "geometria_nota": "CLAVE (correccion pedida por Tomas 2026-06-14): el extremo ENCENDIDO del fosforo apunta hacia el antebrazo y esta EN CONTACTO con la piel; el palito sube fuera de cuadro. La primera version aceptada ('flame', seed 52) tenia la llama hacia ARRIBA (alejandose del brazo) y solo el palito tocaba -> rechazada. Se rehizo invirtiendo el fosforo (6 variantes e05m2_*); Tomas eligio 'mark' (seed 64).",
+        "moderacion": "Quemadura leve, framing suave (apenas quemada, sin herida abierta ni sangre). flux-kontext/dev (open, sin moderacion agresiva). No se gatillo el filtro."
+      }
+    },
+    "control": {
+      "archivo": "images/E05_still_control.png",
+      "rol": "still final de la condicion CONTROL: pincel de maquillaje suave apoyando sus cerdas blancas blandas sobre el antebrazo, en el mismo punto donde apoya el fosforo, sin danar (objeto neutro inofensivo)",
+      "objeto_neutro": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 7,
+        "guidance_scale": 3.5,
+        "steps": 30,
+        "archivo": "work/E05_quemadura_fosforo_antebrazo/candidates/control.jpg",
+        "anchor": "work/E05_quemadura_fosforo_antebrazo/selected/e05_dolor_s21.jpg (el dolor de tijera original; la mano del control matchea con clean)",
+        "prompt": "Edit this photograph: replace the metal scissors with a soft fluffy makeup brush held vertically, its rounded soft white bristle tip resting gently DOWN on the bare forearm skin at the exact center where the scissors tip was. The brush handle points straight up. The forearm skin is completely SMOOTH, FLAT, CLEAN, intact and unmarked: there is absolutely NO red mark, NO red spot, NO sore, NO bruise, NO indentation, NO blood and NO wound anywhere on the skin - just healthy uniform skin tone. The soft brush only touches the skin lightly, causing no harm. Keep the forearm in the EXACT same position, framing, camera angle, lighting and background. A harmless soft makeup brush resting on perfectly healthy unharmed skin.",
+        "nota": "Validado por Tomas ('la clean y control me gustan'). Se conserva tras el pivot a quemadura: el pincel sigue siendo un objeto neutro valido (contraste = objeto peligroso[fosforo, quema] -> objeto neutro[pincel, inofensivo], mismo layout)."
+      },
+      "racional": "Contraste objeto + desenlace con identico layout: dolor = fosforo encendido que apoya y quema levemente vs control = pincel suave que apoya sus cerdas en el MISMO punto (inofensivo). Misma silueta de aproximacion (objeto esbelto que entra por arriba), mismo antebrazo/encuadre/luz."
+    },
+    "inicio": {
+      "archivo": "images/E05_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (antebrazo limpio, SIN objeto y SIN marca)",
+      "derivacion": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 1001,
+        "guidance_scale": 2.5,
+        "steps": 30,
+        "archivo": "work/E05_quemadura_fosforo_antebrazo/candidates/clean.jpg",
+        "anchor": "work/E05_quemadura_fosforo_antebrazo/selected/e05_dolor_s21.jpg",
+        "prompt": "Keep this photograph exactly the same - same bare forearm, same skin texture, same camera angle, same lighting and background. Remove the scissors and any blade COMPLETELY, and remove all indentation, pressure mark, blood and any wound. The forearm now rests calmly with smooth, flat, intact and unmarked skin. There is NO scissors and NO blade and NO object anywhere in the image, just the bare forearm resting.",
+        "nota": "Validado por Tomas. Es ademas el ANCLA del dolor de fosforo (el fosforo se agrego por Kontext sobre esta imagen) -> inicio y dolor pixel-consistentes."
+      }
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "estructura": "inicio compartido = still 'inicio' (antebrazo limpio); el objeto ENTRA durante el clip",
+    "motion_source": "work/E05_quemadura_fosforo_antebrazo/motion.json (leido por run_videos.py via load_motion; NO se edita run_videos.py)",
+    "estado": "COMPLETO. El video de DOLOR se regenero (2026-06-14) con el OK de Tomas, terminando en el still de fosforo 'mark' (cabeza encendida hacia abajo en contacto). El video de DOLOR viejo (tijera) quedo en videos/_archive/E05_video_dolor__v01.mp4. El video de CONTROL existente se REUSO sin regenerar (inicio->pincel; ambos stills sin cambios) -> ahorro $0.56.",
+    "dolor": {
+      "archivo": "videos/E05_video_dolor.mp4",
+      "start_frame": "images/E05_still_inicio.png (antebrazo limpio)",
+      "end_frame": "images/E05_still_dolor.png (fosforo encendido invertido, cabeza en contacto, quemadura leve)",
+      "motion_prompt": "Hold the tight close-up on the bare forearm resting still. A lit wooden match enters from the top and comes to rest vertically on the skin of the forearm; its burning tip touches the skin, a small live flame and a thin wisp of smoke rising, and the skin is barely burned at the contact point - a small faint reddened, lightly scorched spot. No open wound, no blood. A slow, tense moment of the flame touching the skin.",
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E05_video_control.mp4",
+      "start_frame": "images/E05_still_inicio.png (antebrazo limpio)",
+      "end_frame": "images/E05_still_control.png (pincel suave apoyado, sin danar)",
+      "motion_prompt": "Hold the tight close-up on the bare forearm resting calm. A soft fluffy makeup brush enters from the top; its rounded soft white bristle tip comes to rest gently against the skin of the forearm - in the same spot the lit match would touch - lightly brushing the skin without causing any harm. The skin stays smooth, intact and unmarked. A calm, soft, painless movement, no flame, no smoke, no mark.",
+      "sellado": true,
+      "nota": "Generado en la sesion temprana (inicio->pincel). Sigue valido tras el pivot porque inicio y control no cambiaron."
+    }
+  },
+  "costo_usd_aprox_total_nota": "Imagenes: muchas iteraciones de dolor descartadas (flux/dev tijera x8 ~$0.20; Kontext puñal x5, Tramontina x6, fosforo x6, control x2, clean x1 ~ $0.50). Video: control ya pago ($0.56) + dolor de tijera obsoleto ya pago ($0.56, perdido) + dolor de fosforo pendiente ($0.56). El dolor de tijera ya gastado fue justamente el aprendizaje de validar con Tomas antes de gastar en video."
+}
