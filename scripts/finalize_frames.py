@@ -20,7 +20,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim, INDEX, ROOT  # noqa: E402
+from stimulus import get_stim, INDEX, ROOT, archive_if_exists  # noqa: E402
 
 
 def to_png(src: Path, dst: Path, size=None) -> None:
@@ -29,6 +29,7 @@ def to_png(src: Path, dst: Path, size=None) -> None:
     if size and im.size != size:
         im = im.resize(size, Image.LANCZOS)
         print(f"  (resize {Image.open(src).size} -> {size})")
+    archive_if_exists(dst)  # NO-OVERWRITE: guarda el still anterior en images/_archive/
     im.save(dst)
     print(f"  {src} -> {dst.relative_to(ROOT)}")
 

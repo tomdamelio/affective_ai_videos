@@ -25,7 +25,7 @@ from pathlib import Path
 import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim  # noqa: E402
+from stimulus import get_stim, archive_if_exists  # noqa: E402
 
 MODEL_T2I = "fal-ai/flux/dev"
 
@@ -60,6 +60,7 @@ def cmd_gen(st, args) -> None:
     if resp.status_code != 200:
         sys.exit(resp.text[:400])
     out = st.candidates / f"{name}.jpg"
+    archive_if_exists(out)  # NO-OVERWRITE: guarda el candidato anterior en candidates/_archive/
     out.write_bytes(requests.get(resp.json()["images"][0]["url"], timeout=60).content)
     ledger = load_ledger(st)
     ledger[name] = {"status": "candidate", "tag": args.tag, "prompt": args.prompt,

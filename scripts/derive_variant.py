@@ -29,7 +29,7 @@ import requests
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim  # noqa: E402
+from stimulus import get_stim, archive_if_exists  # noqa: E402
 
 MODEL_KONTEXT = "fal-ai/flux-kontext/dev"
 
@@ -118,6 +118,7 @@ def main() -> None:
 
     prompt = args.prompt or PROMPTS[args.variant]
     out = st.candidates / f"{args.variant}.jpg"
+    archive_if_exists(out)  # NO-OVERWRITE: guarda la variante anterior en candidates/_archive/
     out.write_bytes(kontext(prompt, data_uri(anchor), key,
                             seed=args.seed, guidance=args.guidance, steps=args.steps))
     print(f"-> {out}")

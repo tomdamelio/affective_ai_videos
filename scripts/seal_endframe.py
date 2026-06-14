@@ -23,7 +23,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim, CONDITIONS  # noqa: E402
+from stimulus import get_stim, CONDITIONS, archive_if_exists  # noqa: E402
 
 HOME = Path.home()
 _BIN = [HOME / "micromamba/envs/affective-fnirs/Library/bin",
@@ -77,8 +77,10 @@ def seal_condition(st, cond: str, fps: str = "1.2") -> None:
 
     # 2) Refrescar los frames del deliverable; el ultimo = el still exacto.
     st.frames_dir.mkdir(parents=True, exist_ok=True)
+    # NO-OVERWRITE: archiva los frames anteriores en frames/_archive/ en vez de borrarlos
+    # (antes esto hacia old.unlink() y se perdian frames de corridas previas).
     for old in st.frames_dir.glob(f"{st.id}_frame_{cond}_*.png"):
-        old.unlink()
+        archive_if_exists(old)
     subprocess.run(
         [ff, "-y", "-loglevel", "error", "-i", str(video), "-vf", f"fps={fps}",
          str(st.frames_dir / f"{st.id}_frame_{cond}_%d.png")],

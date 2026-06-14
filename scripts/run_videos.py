@@ -27,7 +27,7 @@ import requests
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim  # noqa: E402
+from stimulus import get_stim, archive_if_exists  # noqa: E402
 from seal_endframe import seal_condition  # noqa: E402
 
 MODELS = {
@@ -37,22 +37,25 @@ MODELS = {
 
 # Prompts de movimiento. Inicio compartido = still 'inicio' (extremidad limpia,
 # sin objeto); el objeto ENTRA durante el clip. Ajustar el texto por estimulo.
-# TODO: mover a meta por estimulo. Actual: E07 (jeringa inyecta el pliegue del codo).
+# TODO: mover a meta por estimulo. Actual: E06 (taco aguja aplasta el empeine del pie).
 MOTION = {
     "dolor": (
-        "Hold the tight close-up on the bare inner elbow resting still. A medical "
-        "syringe enters from the top; its thin steel needle moves down and pierces "
-        "into the skin of the inner-elbow crease for a blood draw, the skin pressed "
-        "and punctured at the point of entry as the needle goes in. A clinical "
-        "venipuncture, the needle inserting into the arm."
+        "Hold the tight close-up on the bare foot resting flat on the dark wooden "
+        "floor. A woman's black stiletto high-heeled shoe enters from the top and "
+        "presses its slender heel down onto the top of the bare foot, pressing in "
+        "firmly but only a little, not too deep. In one single slow reaction to the "
+        "pain, the bare toes rise and curl upward off the floor ONE time and stay "
+        "lifted, the foot tensing as the raised toes hold their position. A single "
+        "smooth lift of the toes - no bouncing, no second lift, no repeating, the "
+        "motion happens only once. No blood, no wound, no cut."
     ),
     "control": (
-        "Hold the tight close-up on the bare inner elbow resting calmly. An ordinary "
-        "cotton swab enters from the top and comes to rest with its soft white cotton "
-        "tip pressing gently on the skin of the inner elbow - in the same spot the "
-        "needle would enter - without causing any harm. The skin stays smooth, intact "
-        "and unharmed. A calm, safe, soft and painless movement, no needle, no "
-        "piercing, no mark."
+        "Hold the tight close-up on the bare foot resting flat and calm on the dark "
+        "wooden floor. An ordinary soft makeup brush enters from the top and comes to "
+        "rest with its soft fluffy bristle head lying gently on the instep - in the "
+        "same spot where the heel would press - without causing any harm. The skin "
+        "stays smooth, intact and unharmed, the toes relaxed. A calm, safe, soft and "
+        "painless movement, no heel, no sharp object, no mark."
     ),
 }
 
@@ -89,6 +92,8 @@ def main() -> None:
     ap.add_argument("--condition", choices=["dolor", "control", "both"], default="both")
     ap.add_argument("--duration", default="5")
     ap.add_argument("--tier", choices=["v3pro", "v3std"], default="v3pro")
+    ap.add_argument("--cfg", type=float, default=0.5,
+                    help="cfg_scale Kling: mas alto = sigue mas el prompt de movimiento (default 0.5)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -132,10 +137,11 @@ def main() -> None:
             "duration": args.duration,
             "generate_audio": False,
             "negative_prompt": "blur, distort, low quality, warped, deformed, extra fingers",
-            "cfg_scale": 0.5,
+            "cfg_scale": args.cfg,
         }
         result = submit_and_wait(model, payload, key)
         out = st.video(c)
+        archive_if_exists(out)  # NO-OVERWRITE: guarda el video anterior en videos/_archive/
         out.write_bytes(requests.get(result["video"]["url"], timeout=180).content)
         print(f"  -> {out.relative_to(st.dataset.parent.parent)}")
         # Sellar el ultimo frame con el still aprobado (el video termina EXACTO en el).

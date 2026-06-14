@@ -69,6 +69,29 @@ STILLS = ("inicio", "dolor", "control")
 CONDITIONS = ("dolor", "control")
 
 
+def archive_if_exists(path):
+    """Politica NO-OVERWRITE (decidida 2026-06-14): NUNCA se pisa ni se borra un
+    artefacto ya generado (imagen/video/frame = recurso costoso en plata y tiempo).
+
+    Si `path` ya existe, lo MUEVE a <dir>/_archive/<stem>__vNN<suffix> antes de que
+    el caller escriba la version nueva, conservando todas las versiones anteriores.
+    Devuelve la ruta archivada, o None si no existia. Los `_archive/` quedan
+    gitignored (dataset binarios + work/ ya lo estan) y los respalda OneDrive.
+    """
+    path = Path(path)
+    if not path.exists():
+        return None
+    archive = path.parent / "_archive"
+    archive.mkdir(parents=True, exist_ok=True)
+    n = 1
+    dest = archive / f"{path.stem}__v{n:02d}{path.suffix}"
+    while dest.exists():
+        n += 1
+        dest = archive / f"{path.stem}__v{n:02d}{path.suffix}"
+    path.replace(dest)
+    return dest
+
+
 class Stim:
     def __init__(self, sid: str, slug: str, epss_pair=None, categoria=None, descripcion=None):
         self.id = sid

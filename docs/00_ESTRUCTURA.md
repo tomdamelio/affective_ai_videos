@@ -195,3 +195,26 @@ run scripts/new_stimulus.py --id E03 ...
 > permite **regenerar** cualquier estímulo. Los binarios los respalda OneDrive.
 
 OneDrive respalda **todo** (incluido lo gitignored) por la ruta del repo.
+
+---
+
+## 9. Política NO-OVERWRITE (nunca se pisa ni se borra un artefacto)
+
+**Regla (decidida 2026-06-14):** ningún archivo ya generado —imagen, video o frame—
+se sobrescribe ni se borra jamás. Cada generación cuesta plata y tiempo; un archivo
+pisado es un recurso perdido. Antes de escribir una salida que **ya existe**, el
+pipeline la **archiva** automáticamente en un `_archive/` al lado, versionada
+(`<stem>__v01`, `__v02`, …). Nada se elimina; las versiones viejas quedan disponibles.
+
+- **Mecanismo:** `stimulus.archive_if_exists(path)` mueve el archivo existente a
+  `<dir>/_archive/<stem>__vNN<ext>` antes de cada escritura. Lo llaman **todos** los
+  scripts que escriben: `run_videos.py` (videos), `seal_endframe.py` (frames — antes
+  hacía `unlink()` y por eso se perdían frames de corridas previas), `finalize_frames.py`
+  (stills), `derive_variant.py` y `pilot_v1.py` (candidatos de imagen).
+- **Dónde aparecen los `_archive/`:** `dataset/<id>/{videos,images,frames}/_archive/`,
+  `work/<id>/candidates/_archive/`, etc. Quedan **gitignored** (los binarios de
+  `dataset/` y todo `work/` ya lo están) y los respalda OneDrive.
+- **Comandos ad-hoc (ffmpeg/cp/extracciones manuales):** misma regla — usar nombres
+  únicos por corrida y **nunca** `rm -f`/`mv` que pise; si hace falta limpiar, mover a
+  `_archive/`. Si un frame intermedio de un video sirve, **copiarlo a un nombre estable
+  antes** del siguiente render (que refresca `frames/`).
