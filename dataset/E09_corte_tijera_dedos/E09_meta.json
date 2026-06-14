@@ -1,0 +1,94 @@
+{
+  "id": "E09",
+  "slug": "corte_tijera_dedos",
+  "name": "E09_corte_tijera_dedos",
+  "epss_pair": "41",
+  "epss_pair_estado": "Vinculado al par EPSS-Limb 41 (Meng et al. 2023, CC BY 4.0). En EPSS-41 la imagen dolorosa es una tijera roja que se cierra sobre la piel del hueco ENTRE dos dedos. Aqui la escena se RE-DEFINIO (decision de Tomas, 2026-06-14): el dolor paso a ser una tijera roja cortando el COSTADO de un dedo, con herida y sangre visibles (no la version 'amenaza inminente sin herida' que se habia intentado primero). El control NO replica el objeto del par EPSS; se eligio un hisopo de algodon (acto cotidiano, inofensivo).",
+  "categoria": "corte",
+  "descripcion": "Tijera roja cortando el costado de un dedo (corte con sangre y herida); control: hisopo de algodon apoyado perpendicular desde arriba sobre el mismo dedo, sin cortar ni danar",
+  "fuente": "Par EPSS-Limb 41 (Meng et al. 2023, CC BY 4.0). El still de dolor se genero desde cero con flux/dev (no es un crop del EPSS); inicio y control se derivaron por edicion local (Kontext).",
+  "creado": "2026-06-14",
+  "modificado": "2026-06-14",
+  "estado": "completo",
+  "seleccion": "selection_rank 9 (E09), par EPSS 41, categoria corte. Ver analysis/epss_limb_roster.csv y docs/01_stimulus_selection.md.",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "fotogramas extraidos de los videos (dolor, control); frame 6 = still de cada condicion",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "flujo": "El still de DOLOR se genero desde cero con flux/dev (tijera cortando el costado del dedo, con sangre). El INICIO (dedo limpio, sin objeto, sin sangre ni herida) y el CONTROL (hisopo apoyado) se derivaron por edicion local con Kontext conservando dedo/encuadre/luz. Proceso de validacion iterativo con Tomas: (1) primero se intento un dolor 'amenaza inminente sin herida' (tijera presionando el hueco entre dedos) -> RECHAZADO por Tomas, que pidio corte real con sangre y marca; (2) se generaron ~16 candidatos de dolor con sangre en dos formatos preferidos (cenital y perfil lateral) -> Tomas eligio v6_perfil (perfil, tijera cortando el costado del dedo con hilo de sangre); (3) inicio limpio derivado del dolor -> validado s7002; (4) control: se probaron bola de algodon y alicate cortando la uña antes de converger en un HISOPO perpendicular apoyado en el dedo (eleccion final de Tomas).",
+  "moderacion_nota": "El dolor explicito (sangre/herida) se genero con fal-ai/flux/dev, que es open-weights y NO tiene moderacion de entrada del prompt (enable_safety_checker:False apaga el filtro de salida). Por eso NO hizo falta el reframe 'amenaza inminente sin herida' (ese workaround solo aplica a los endpoints flux-2-pro/edit, que tienen filtro de entrada 422). Ver MEMORY project_fal_content_filter.",
+  "resolucion_nota": "Los 3 stills son 1024x576 (flux/dev landscape_16_9 para el dolor; Kontext 1024x576 para inicio y control). finalize_frames.py los igualo a la resolucion del dolor (1024x576).",
+  "images": {
+    "dolor": {
+      "archivo": "images/E09_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: tijera roja cuyo filo corta el costado de un dedo (perfil), herida abierta con sangre roja brotando y un hilo que baja",
+      "ancla_flux_dev": {
+        "modelo": "fal-ai/flux/dev",
+        "tag_ledger": "v6_perfil",
+        "seed": 66,
+        "size": "landscape_16_9",
+        "enable_safety_checker": false,
+        "archivo": "work/E09_corte_tijera_dedos/selected/v6_perfil_s66.jpg",
+        "prompt": "Side profile extreme close-up macro photograph. The steel blade of red-handled scissors slicing into the side of a finger, cutting through the skin, a deep crimson gash with fresh wet realistic blood running down the finger in a thin trickle. Sharp focus on the cut and the running blood. Anatomically correct hand, five fingers. Plain white background, bright even lighting, 8k raw photo.",
+        "nota": "Elegido por Tomas (2026-06-14) entre ~16 candidatos con sangre (formatos cenital y perfil). Otros candidatos fuertes preservados en work/E09_corte_tijera_dedos/candidates/ (v8_base, w5/w6/w8_perfil, w1_cenital)."
+      }
+    },
+    "inicio": {
+      "archivo": "images/E09_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (mismo dedo en perfil, limpio, SIN tijera, SIN sangre ni herida)",
+      "objeto_neutro": null,
+      "derivacion": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 7002,
+        "guidance_scale": 3.5,
+        "anchor": "work/E09_corte_tijera_dedos/selected/v6_perfil_s66.jpg (el dolor)",
+        "archivo": "work/E09_corte_tijera_dedos/candidates/clean_v6_s7002.jpg",
+        "prompt": "Keep this photograph exactly the same: the same finger, same side-profile pose, same angle, same framing, lighting and plain white background. COMPLETELY remove the scissors and every blade. Remove ALL blood - every red drop, smear, streak and the hanging droplet - and completely remove the cut and wound. The finger is whole, smooth, intact and uninjured, with healthy even clean dry skin and a natural rounded fingertip with no break in its outline. Nothing touches the finger. No scissors anywhere, no blood anywhere, no cut, no wound, no red mark.",
+        "nota": "Kontext borro tijera, sangre y herida en una sola pasada; no hizo falta inpaint (a diferencia de E07)."
+      }
+    },
+    "control": {
+      "archivo": "images/E09_still_control.png",
+      "rol": "still final de la condicion CONTROL: hisopo de algodon entrando perpendicular desde arriba, su punta blanda apoyada sobre el dedo, sin cortar ni danar",
+      "objeto_neutro": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 9202,
+        "guidance_scale": 3.0,
+        "anchor": "work/E09_corte_tijera_dedos/candidates/clean_v6_s7002.jpg (el INICIO limpio)",
+        "archivo": "work/E09_corte_tijera_dedos/candidates/control_hisopo_s9202.jpg",
+        "metodo": "Se AGREGO el hisopo sobre el inicio limpio (no se derivo del dolor) para heredar la piel sin marca y quedar pixel-consistente con el inicio (mismo patron que E07). Edicion local Kontext: hisopo vertical perpendicular, punta de algodon blanca apoyada en el dorso del dedo, palito hacia arriba fuera de cuadro.",
+        "prompt": "Edit this photograph: add a white cotton swab (cotton bud / Q-tip) held VERTICALLY and PERPENDICULAR, pointing straight down from above, its soft fluffy white cotton tip resting gently on the top of the finger; the thin straight stick of the swab rises straight up out of the top of the frame. The soft cotton tip simply touches the skin without pressing, denting or harming it. Keep the finger whole, intact and completely uninjured: no blood, no cut, no wound, healthy even clean skin. Keep the same finger, the same side-profile pose, angle, framing, lighting and plain white background EXACTLY the same. A harmless soft cotton swab resting perpendicular on the finger.",
+        "racional": "Contraste objeto + desenlace con el mismo dedo: dolor = tijera que corta la carne (herida + sangre) vs control = hisopo de algodon que apoya su punta blanda sobre el mismo dedo (acto cotidiano, inofensivo). Antes de converger en el hisopo se descartaron una bola de algodon (Tomas la sintio poco real) y un alicate cortando la uña."
+      }
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_video": 1.12,
+    "estructura": "inicio compartido = still 'inicio' (dedo limpio, sin objeto); el objeto ENTRA durante el clip",
+    "dolor": {
+      "archivo": "videos/E09_video_dolor.mp4",
+      "start_frame": "images/E09_still_inicio.png (dedo limpio)",
+      "end_frame": "images/E09_still_dolor.png (tijera cortando el dedo, sangre)",
+      "motion_prompt": "Hold the side-profile close-up on the single extended finger. A pair of red-handled scissors enters from the upper right and its sharp steel blade cuts down into the top of the fingertip, slicing the skin open; a fresh red wound appears and bright red blood wells up from the cut and a droplet swells and drips down. The scissors cutting into the finger, blood welling. Keep the same finger, framing and plain white background.",
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E09_video_control.mp4",
+      "start_frame": "images/E09_still_inicio.png (dedo limpio)",
+      "end_frame": "images/E09_still_control.png (hisopo apoyado, sin danar)",
+      "motion_prompt": "Hold the side-profile close-up on the single extended finger, resting calm. A white cotton swab descends perpendicular straight down from above and its soft fluffy cotton tip comes to rest gently on the top of the fingertip - simply touching the skin without pressing, denting or harming it. The finger stays whole, smooth, intact and unharmed. A calm, soft, painless movement, no blades, no cut, no blood.",
+      "sellado": true
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E09_frame_dolor_1..6.png (frame 6 = still de dolor)",
+    "control": "frames/E09_frame_control_1..6.png (frame 6 = still de control)"
+  },
+  "costo_usd_aprox_total": 2.3,
+  "costo_usd_aprox_total_nota": "~$1.12 video (2 x $0.56) + ~$1.2 imagenes. El gasto de imagenes fue mayor que el nominal por la RE-DEFINICION del dolor (se descarto una primera tanda 'amenaza inminente sin herida' y se generaron ~16 candidatos nuevos con sangre) y por las iteraciones del control (bola de algodon -> alicate -> hisopo). flux/dev ~$0.025 c/u; Kontext ~$0.025 c/u; 3 inpaints (de la tanda descartada) ~$0.05 c/u."
+}
