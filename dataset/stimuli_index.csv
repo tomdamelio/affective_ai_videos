@@ -1,0 +1,4 @@
+id,slug,epss_pair,categoria,descripcion,n_images,n_videos,estado,creado
+E01,corte_pepino,3,corte,Cortar pepino; el cuchillo corta el dedo indice,3,2,completo,2026-06-13
+E02,lapiz_punzante_dorso,50,punzante,Lapiz con la punta apoyada presionando el dorso de la mano (punzante; derivado de la sesion del par 50 - NO es render fiel del cigarrillo),3,2,completo,2026-06-13
+E07,inyeccion_codo,48,inyeccion,Jeringa que pincha el pliegue del codo (extraccion de sangre); control: hisopo de algodon apoyado en la misma posicion,3,2,completo,2026-06-13

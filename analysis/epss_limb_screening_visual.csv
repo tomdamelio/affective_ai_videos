@@ -1,0 +1,69 @@
+pair,categoria,credibilidad,imaginabilidad_1p,aptitud_video,nota
+1,corte,5,5,5,Cortar verdura (melon amargo); dolor: cuchillo sobre dedo
+2,quemadura,4,5,4,Fosforo encendido quema los dedos
+3,corte,5,5,5,Cortar pepino; dolor: cuchillo corta dedo (sangre visible)
+4,punzante,5,5,4,Coser tela azul; dolor: aguja pincha dedo
+5,punzante,4,5,4,Aguja de coser pincha dedo
+6,punzante,3,4,3,Mano en pasto; dolor: insecto sobre la mano (dificil de animar)
+7,corte,5,5,5,Pelar fruta amarilla; dolor: cuchillo resbala al pulgar
+8,corte,5,5,5,Pelar manzana; dolor: cuchillo corta dedo
+9,corte,4,5,4,Afilar lapiz con hoja; dolor: hoja sobre dedo
+10,corte,4,5,5,Cortar vegetal violeta; dolor: cuchillo sobre dedo
+11,aplastamiento,4,5,4,Pie descalzo; dolor: taco aguja pisa el pie
+12,corte,4,5,4,Tijera corta papel; dolor: tijera corta dedo
+13,quemadura,5,5,5,Mano sobre hornalla apagada; dolor: mano sobre llama de gas
+14,quemadura,4,5,4,Fosforo: la llama alcanza los dedos
+15,quemadura,5,5,5,Mano sobre sarten fria; dolor: mano sobre olla hirviendo
+16,punzante,5,5,4,Mano sobre pelota; dolor: mano presiona un cactus
+17,corte,5,5,5,Cortar pan; dolor: cuchillo corta la mano
+18,quemadura,4,5,4,Dedo sobre encendedor; dolor: dedo en la llama
+19,aplastamiento,5,5,5,Mano en cajon; dolor: dedos atrapados al cerrarse
+20,aplastamiento,5,5,5,Mano en marco; dolor: dedos atrapados por la puerta
+21,aplastamiento,4,5,4,Mano aplastada por puerta/tabla
+22,corte,5,5,5,Cortar sandia; dolor: cuchillo corta dedo
+23,punzante,4,5,4,Dedo toca vaso intacto; dolor: dedo toca vaso ROTO (encuadre identico)
+24,aplastamiento,4,5,4,Mano al borde de mesada; dolor: aplastada por tapa/borde pesado
+25,aplastamiento,4,5,4,Abrochadora sobre papel; dolor: abrochadora sobre dedo
+26,corte,4,5,4,Papel/carton; dolor: corte de filo en el dedo
+27,aplastamiento,3,5,3,Cortaunias; dolor: corta piel/una de mas (sutil)
+28,aplastamiento,3,5,3,Mano contra puerta roja; dolor: clavo/bisagra sobre mano (ambiguo)
+29,punzante,5,5,4,Pie junto a goma; dolor: pie pisa chinches
+30,aplastamiento,5,5,5,Martillar clavo; dolor: martillazo en el pulgar (clasico)
+31,aplastamiento,2,3,3,Taco pisa zapatilla (pie cubierto: poco creible)
+32,torcedura,3,5,3,Manos doblan dedos del pie hacia atras
+33,quemadura,4,5,5,Taza humeante por el asa; dolor: dedo DENTRO del te caliente (encuadre identico)
+34,inyeccion,4,5,4,Palito entre dedos; dolor: jeringa pincha entre los dedos
+35,inyeccion,4,5,4,Palito sobre pie; dolor: jeringa inyecta el pie
+36,aplastamiento,4,5,4,Abrochadora junto a mano; dolor: abrocha la mano (similar a 25)
+37,aplastamiento,4,5,4,Pinza sobre objeto; dolor: pinza aprieta el dedo
+38,corte,4,5,4,Tijera corta papel; dolor: tijera corta dedo
+39,corte,4,5,4,Mano sostiene lapiz; dolor: mano empunia la hoja del cuchillo
+40,quemadura,4,5,4,Fosforo encendido se acerca a los dedos
+41,corte,4,5,4,Mano extendida; dolor: tijera roja corta entre los dedos
+42,punzante,4,5,4,Dedo presiona masa blanda; dolor: dedo presiona alfiler parado
+43,punzante,4,5,4,Dedo toca otra mano; dolor: aguja pincha la yema
+44,inyeccion,4,5,4,Palma abierta; dolor: jeringa en la palma
+45,punzante,4,5,4,Aguja apoyada en antebrazo; dolor: aguja CLAVADA en antebrazo
+46,corte,4,5,4,Pincel sobre muneca; dolor: cuchillo corta la muneca (OJO connotacion autolesion)
+47,corte,4,5,4,Palma abierta; dolor: tijera corta la palma
+48,inyeccion,5,5,4,Pincel en pliegue del codo; dolor: jeringa en el pliegue (extraccion de sangre familiar)
+49,inyeccion,4,5,4,Dorso de mano; dolor: jeringa inyecta el dorso
+50,quemadura,5,5,5,Mano; dolor: cigarrillo encendido quema el dorso
+51,otro,2,4,2,Trincheta sujeta sobre muneca con soporte (montaje poco natural)
+52,punzante,5,5,4,Manos sostienen sandia; dolor: manos sostienen erizo de mar
+53,quemadura,4,5,4,Fosforo apagado; dolor: fosforo encendido quema dedos (fondo oscuro)
+54,inyeccion,4,5,4,Punio/muneca; dolor: jeringa en la muneca
+55,inyeccion,4,5,4,Brocha de maquillaje en muneca; dolor: jeringa en la muneca
+56,corte,3,5,3,Pincel sobre brazo; dolor: cuchillo apoyado en el brazo (estatico)
+57,inyeccion,4,5,4,Jeringa apoyada; dolor: jeringa inyectando antebrazo
+58,punzante,4,5,4,Antebrazo; dolor: tijera se clava en el antebrazo
+59,otro,3,5,3,Antebrazo; dolor: instrumento pellizca/corta piel (ambiguo)
+60,inyeccion,4,5,4,Antebrazo; dolor: jeringa inyecta antebrazo
+61,quemadura,4,5,4,Pie descalzo; dolor: cigarrillo encendido quema el pie
+62,estado_herida,5,5,1,Pie sano vs pie con herida/quemadura GRAVE (estado ya consumado; no sirve para video inicio-fin)
+63,aplastamiento,4,5,4,Clip binder sobre papel; dolor: clip aprieta el dedo
+64,corte,4,5,4,Trincheta sobre madera; dolor: trincheta resbala a la mano
+65,punzante,4,5,4,Pie; dolor: talon pisa objeto espinoso
+66,quemadura,4,5,4,Pie descalzo; dolor: pie sobre vela encendida
+67,estado_herida,5,5,1,Pie sano vs pie escaldado (estado ya consumado; no sirve para video)
+68,inyeccion,4,5,4,Antebrazo; dolor: jeringa inyecta antebrazo

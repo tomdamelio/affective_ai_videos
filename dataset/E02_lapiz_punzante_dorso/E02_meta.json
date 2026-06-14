@@ -1,0 +1,84 @@
+{
+  "id": "E02",
+  "slug": "lapiz_punzante_dorso",
+  "name": "E02_lapiz_punzante_dorso",
+  "epss_pair": "50",
+  "epss_pair_estado": "Vinculado al par 50 (decision 2026-06-13: se mantiene por ahora), pero NO es un render fiel: E02 nacio como el par 50 (cigarrillo quema el dorso) y se re-definio a un LAPIZ con la punta presionando el dorso (punzante). En la ESTRATIFICACION cuenta como PUNZANTE (scripts/epss_roster.py: RECAT[50]='punzante'). Pendiente (diferido): rebalanceo de cuota por categoria (sumar una quemadura). Ver docs/01_stimulus_selection.md.",
+  "categoria": "punzante",
+  "descripcion": "Lapiz con la punta (grafito) apoyada y presionando el dorso de la mano, hundiendo la piel (punzante)",
+  "fuente": "Derivado de la sesion del par EPSS-Limb 50 (Meng et al. 2023, CC BY 4.0). NO es un render fiel del par 50 (cigarrillo): el cigarrillo se reemplazo por un lapiz punta-abajo. La variante del cigarrillo se conserva en work/E02_lapiz_punzante_dorso/extras/ por si se reusa como estimulo de quemadura futuro.",
+  "creado": "2026-06-13",
+  "modificado": "2026-06-13",
+  "estado": "completo",
+  "historial": "2026-06-13: E02 re-definido. Originalmente era 'quemadura_cigarrillo_dorso' (cigarrillo quema el dorso). Tomas decidio cambiar el DOLOR al lapiz con la punta hacia abajo (la variante 'demasiado dolorosa' que se habia descartado como control y guardado en extras). El cigarrillo (still + video de dolor) se preservo en extras/cigarrillo_quemadura_*. El control (lapiz al reves, goma de borrar) y el inicio (mano limpia) se mantuvieron: ahora el contraste es el MISMO lapiz invertido (punta vs goma).",
+  "seleccion": "selection_rank 2 (E02); ancla acordada del par 50, luego re-definida a punzante (lapiz). Ver analysis/epss_limb_roster.csv y docs/01_stimulus_selection.md §7.",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "fotogramas extraidos de los videos (dolor, control)",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "flujo": "Contraste de MINIMO cambio sobre el MISMO objeto (un lapiz): el dolor es el lapiz con la PUNTA (grafito) presionando el dorso (punzante); el control es el MISMO lapiz INVERTIDO, con la goma de borrar (blanda) apoyada en la misma posicion (inofensivo). Inicio compartido = mano limpia sin el lapiz. El dolor se promovio desde una derivacion Kontext (variante de control descartada por 'demasiado dolorosa'); su video ya estaba generado (inicio limpio -> lapiz punta sobre el dorso) y su still es el frame final (sellado).",
+  "images": {
+    "dolor": {
+      "archivo": "images/E02_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: lapiz con la punta de grafito presionada sobre el dorso de la mano, hundiendo/marcando la piel (punzante)",
+      "origen_still_final": "Frame final del video de dolor (lapiz punta). El still proviene de work/E02_lapiz_punzante_dorso/extras/lapiz_punta_DOLOROSO_still.jpg (1024x576), convertido a PNG y sellado como ultimo frame del video con seal_endframe.py (2026-06-13).",
+      "anclaje_dolor": {
+        "modelo": "fal-ai/flux-kontext/dev (derivacion) + fal-ai/kling-video/v3/pro/image-to-video (video)",
+        "metodo": "Derivado por edicion local (Kontext) del still de dolor del cigarrillo (par 50): se reemplazo el cigarrillo por un lapiz sostenido vertical con la PUNTA de grafito apuntando hacia abajo, presionando el dorso. Originalmente generado como CANDIDATO de control y descartado por leerse como doloroso (punta sobre la piel); guardado en extras/ y luego promovido a DOLOR de E02. El prompt exacto de esa derivacion Kontext no quedo logueado por separado (fue una prueba de control, no pasa por el ledger de pilot_v1).",
+        "nota": "El still de dolor del cigarrillo original (con su prompt flux/dev completo) se conserva en work/E02_lapiz_punzante_dorso/extras/cigarrillo_quemadura_still.png; el prompt esta en el historial de git de este meta."
+      }
+    },
+    "control": {
+      "archivo": "images/E02_still_control.png",
+      "rol": "still final de la condicion CONTROL: el MISMO lapiz pero INVERTIDO (goma de borrar blanda hacia abajo) apoyado en la misma posicion sobre el dorso, sin dano",
+      "objeto_neutro_semilla": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 1001,
+        "archivo": "work/E02_lapiz_punzante_dorso/candidates/control.jpg",
+        "metodo": "edicion local del still de dolor (cigarrillo): sustituir por un lapiz invertido con la goma de borrar (rosa, blanda) apoyada en el dorso; la punta afilada apunta hacia arriba; remover todo dano, conservando la mano identica. Este still fue el end_frame del primer video de control; de ese video se eligio el frame 4 como still final.",
+        "prompt": "Edit this photograph: replace the cigarette with an ordinary wooden pencil held UPSIDE DOWN, so that its blunt pink rubber eraser end (with the silver metal ferrule) is at the BOTTOM, pointing straight down and resting gently on the back of the hand exactly where the cigarette was; the sharpened writing tip points UP, away from the skin. Completely remove all ember, ash, smoke, glowing tip, burn mark, scorch, blister and redness - the skin is smooth, clean, intact and completely unharmed. The soft rubber eraser only presses lightly and harmlessly against the skin, causing no pain or damage. Keep the hand in the EXACT same position and pose, same fingers, same framing, same camera angle, lighting, surface and background. The result: the same intact hand with a harmless pencil resting eraser-down, perpendicular, on the back of the hand in place of the cigarette."
+      },
+      "racional": "Contraste de minimo cambio sobre el MISMO objeto: dolor = lapiz punta de grafito (punzante, hunde la piel) vs control = el MISMO lapiz invertido con la goma de borrar (blanda, no dana). Diverge SOLO en que extremo del lapiz toca la piel (punta vs goma) y el desenlace (dana vs no dana), con identico encuadre, mano y posicion. Es un contraste mas ajustado que el original cigarrillo-vs-lapiz (alli divergia la identidad del objeto)."
+    },
+    "inicio": {
+      "archivo": "images/E02_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (extremidad limpia, SIN el lapiz)",
+      "modelo": "fal-ai/flux-kontext/dev",
+      "seed": 1001,
+      "metodo": "edicion local del still de dolor (cigarrillo): quitar el objeto + todo el dano -> mano intacta sobre la superficie. Es el inicio compartido del que parten ambos videos (dolor y control); verificado que el primer frame del video de dolor (lapiz) y el del de control coinciden.",
+      "prompt": "Keep this photograph exactly the same - same hand, same fingers, same neutral surface, same camera angle, same lighting and background. Remove the cigarette COMPLETELY, and remove all smoke, ash, falling embers, the glowing ember and any burn mark, scorch, blister or redness. If there is any other hand or fingers holding the cigarette, remove them too. The hand now rests alone, calm and completely intact, on the bare empty surface: the skin on the back of the hand is smooth, clean and unharmed. There is NO cigarette, NO smoke and NO ash anywhere in the image, just the single healthy hand resting on the empty surface."
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_aprox": 1.12,
+    "estructura": "inicio compartido = still 'inicio' (mano limpia sin el lapiz); el lapiz ENTRA durante el clip",
+    "dolor": {
+      "archivo": "videos/E02_video_dolor.mp4",
+      "start_frame": "images/E02_still_inicio.png (mano limpia)",
+      "end_frame": "images/E02_still_dolor.png (lapiz con la punta presionando/hundiendo el dorso)",
+      "motion_prompt": "(no logueado por separado) Inicio limpio -> un lapiz entra desde arriba sostenido vertical y baja con la PUNTA de grafito apuntando hacia abajo, presionando el dorso de la mano y hundiendo la piel en el punto de contacto. Video pre-generado, reusado tal cual desde extras/lapiz_punta_DOLOROSO_video.mp4; ultimo frame sellado con el still de dolor.",
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E02_video_control.mp4",
+      "start_frame": "images/E02_still_inicio.png (mano limpia)",
+      "end_frame": "images/E02_still_control.png (lapiz invertido, goma de borrar apoyada en el dorso, sin dano)",
+      "motion_prompt": "Hold the tight close-up on the intact back of the hand resting calmly on the neutral surface. An ordinary wooden pencil enters from the top held upside down, and comes to rest with its soft pink rubber eraser end pressing gently on the back of the hand - in the same spot the tip would touch - without causing any harm. The skin stays intact and unharmed. A calm, safe, soft and painless movement, no damage.",
+      "sellado": true
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E02_frame_dolor_1..6.png (regenerados tras el sellado, 2026-06-13)",
+    "control": "frames/E02_frame_control_1..6.png"
+  },
+  "extras": {
+    "ubicacion": "work/E02_lapiz_punzante_dorso/extras/",
+    "cigarrillo_quemadura": "Version ORIGINAL del dolor de E02 (cigarrillo encendido quema el dorso, par EPSS 50): still (cigarrillo_quemadura_still.png) + video (cigarrillo_quemadura_video.mp4). Se conserva por si se reusa como estimulo de QUEMADURA a futuro. El prompt flux/dev del cigarrillo esta en el historial de git de este meta (commit previo a 2026-06-13).",
+    "lapiz_punta_DOLOROSO": "Archivos fuente del dolor vigente (lapiz_punta_DOLOROSO_still.jpg + _video.mp4), antes de promoverse al deliverable."
+  }
+}

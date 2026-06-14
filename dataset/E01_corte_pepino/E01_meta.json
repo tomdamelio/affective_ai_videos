@@ -1,0 +1,63 @@
+{
+  "id": "E01",
+  "slug": "corte_pepino",
+  "name": "E01_corte_pepino",
+  "epss_pair": "3",
+  "categoria": "corte",
+  "descripcion": "Cortar pepino; el cuchillo corta el dedo indice",
+  "fuente": "EPSS-Limb (Meng et al. 2023, CC BY 4.0), par 3 (cortar pepino)",
+  "creado": "2026-06-13",
+  "estado": "completo",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "secuencias extraidas de los videos (dnk_=dolor, cnk_=control)",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "images": {
+    "inicio": {
+      "archivo": "images/E01_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (mano limpia, SIN cuchillo)",
+      "modelo": "fal-ai/flux-kontext/dev",
+      "metodo": "edicion del frame de dolor: quitar cuchillo + sangre -> mano intacta sobre la tabla",
+      "prompt": "Keep this photograph exactly the same - same hand, same fingers, same wooden cutting board, same camera angle, same lighting and background. Remove the knife and any blade COMPLETELY, and remove all blood and any wound. The hand now rests calmly on a bare empty wooden cutting board: the fingertips touch only smooth clean wood, the index finger is intact and unharmed. There is NO knife and NO blade anywhere in the image, just the hand on the empty board."
+    },
+    "dolor": {
+      "archivo": "images/E01_still_dolor.png",
+      "rol": "still final de la condicion DOLOR (el cuchillo corta + sangre)",
+      "modelo": "fal-ai/flux/dev",
+      "seed": 7,
+      "metodo": "texto->imagen; herida como sujeto principal al inicio del prompt",
+      "prompt": "Extreme close-up macro photograph of a human hand on a wooden kitchen cutting board. The sharp edge of a chef's knife is cutting directly into the pad of the index fingertip: the blade edge is sunk into the flesh, splitting the skin open in a clean deep laceration. The wound gapes slightly along the cut line, with bright red blood flowing out of the open gash, running down the finger and pooling on the board. The blade edge is in clear contact with the cut, biting into the fingertip. The other fingers are tense and curled. Anatomically correct hand, five fingers. Razor-sharp focus on the open cut on the fingertip and the knife edge entering the skin. Natural soft kitchen light, shallow depth of field, hyperrealistic skin pores, wound and blood, 8k, raw documentary style."
+    },
+    "control": {
+      "archivo": "images/E01_still_control.png",
+      "rol": "still final de la condicion CONTROL (el cuchillo en el dedo SIN cortar, sin sangre)",
+      "origen": "frames/E01_frame_control_3.png (frame 3 del video de control; no es un keyframe generado aparte)",
+      "racional": "contraste minimo con dolor: mismo cuchillo en la misma posicion sobre el dedo; solo cambia el desenlace (corta vs no corta). Mejor control que 'mano limpia', que diferiria en dos cosas (sin cuchillo Y sin herida)."
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_aprox": 1.12,
+    "estructura": "inicio compartido = still 'inicio' (mano limpia sin cuchillo); el cuchillo ENTRA durante el clip",
+    "dolor": {
+      "archivo": "videos/E01_video_dolor.mp4",
+      "start_frame": "images/E01_still_inicio.png (mano limpia)",
+      "end_frame": "images/E01_still_dolor.png (corte + sangre)",
+      "motion_prompt": "Hold the tight close-up on the intact fingertips resting on the wooden board. A sharp chef's knife blade enters from the upper left and slices into the index fingertip; the skin splits open and bright red blood wells up and runs onto the board. A sudden accidental cut."
+    },
+    "control": {
+      "archivo": "videos/E01_video_control.mp4",
+      "start_frame": "images/E01_still_inicio.png (mano limpia)",
+      "end_frame": "images/E01_still_inicio.png (mano limpia; el cuchillo entra y se retira sin cortar)",
+      "motion_prompt": "Hold the tight close-up on the intact fingertips resting calmly on the wooden board. A chef's knife blade enters briefly from the upper left, rests near the board beside the hand and is lifted away again without ever cutting; the fingers stay intact and unharmed. A calm, safe, controlled movement, no injury, no blood."
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E01_frame_dolor_1..6.png",
+    "control": "frames/E01_frame_control_1..6.png"
+  }
+}

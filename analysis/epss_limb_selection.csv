@@ -1,0 +1,69 @@
+pair,categoria,shortlist,score,pain_pain,pain_nopain,pain_delta,arousal_delta,valence_pain,credibilidad,imaginabilidad_1p,aptitud_video,actor_gender,nota,incluido,exclude_reason,cat_final,category_rank,stimulus_id,selection_rank,slug_sugerido
+1,corte,False,0.61,5.95,1.71,4.24,3.23,3.19,5,5,5,1.0,Cortar verdura (melon amargo); dolor: cuchillo sobre dedo,0,,corte,,,,
+2,quemadura,False,-0.75,6.19,2.16,4.03,3.11,3.32,4,5,4,1.0,Fosforo encendido quema los dedos,0,,quemadura,,,,
+3,corte,True,0.89,6.55,2.02,4.53,3.65,3.27,5,5,5,1.0,Cortar pepino; dolor: cuchillo corta dedo (sangre visible),1,,corte,4,E01,1,corte_pepino
+4,punzante,False,-1.07,5.56,2.02,3.55,3.08,3.39,5,5,4,2.0,Coser tela azul; dolor: aguja pincha dedo,0,,punzante,,,,
+5,punzante,False,-0.14,5.6,1.68,3.92,2.92,3.58,4,5,4,2.0,Aguja de coser pincha dedo,0,,punzante,,,,
+6,punzante,False,1.26,5.69,1.5,4.19,3.42,2.4,3,4,3,2.0,Mano en pasto; dolor: insecto sobre la mano (dificil de animar),0,"animable: insecto vivo, sin agente discreto controlable",punzante,,,,
+7,corte,False,-0.25,5.52,1.68,3.84,2.9,3.69,5,5,5,2.0,Pelar fruta amarilla; dolor: cuchillo resbala al pulgar,0,,corte,,,,
+8,corte,True,0.57,6.15,1.79,4.35,3.23,3.68,5,5,5,1.0,Pelar manzana; dolor: cuchillo corta dedo,0,,corte,,,,
+9,corte,False,1.13,6.35,1.81,4.55,3.48,3.24,4,5,4,1.0,Afilar lapiz con hoja; dolor: hoja sobre dedo,0,,corte,,,,
+10,corte,False,1.72,6.34,1.63,4.71,3.5,3.06,4,5,5,1.0,Cortar vegetal violeta; dolor: cuchillo sobre dedo,0,,corte,,,,
+11,aplastamiento,False,1.1,5.92,1.6,4.32,3.34,3.45,4,5,4,1.0,Pie descalzo; dolor: taco aguja pisa el pie,1,,aplastamiento,1,E06,6,aplastamiento_taco_pie
+12,corte,False,0.78,5.73,1.6,4.13,3.27,3.6,4,5,4,1.0,Tijera corta papel; dolor: tijera corta dedo,0,,corte,,,,
+13,quemadura,True,-0.55,5.73,1.77,3.95,2.74,3.97,5,5,5,2.0,Mano sobre hornalla apagada; dolor: mano sobre llama de gas,0,,quemadura,,,,
+14,quemadura,False,-4.04,4.37,1.81,2.56,1.47,4.06,4,5,4,1.0,Fosforo: la llama alcanza los dedos,0,,quemadura,,,,
+15,quemadura,True,-0.15,5.5,1.82,3.68,3.34,3.69,5,5,5,2.0,Mano sobre sarten fria; dolor: mano sobre olla hirviendo,0,,quemadura,,,,
+16,punzante,True,-0.49,4.81,1.45,3.35,2.81,3.81,5,5,4,1.0,Mano sobre pelota; dolor: mano presiona un cactus,0,,punzante,,,,
+17,corte,True,1.02,6.32,1.76,4.56,3.32,3.47,5,5,5,2.0,Cortar pan; dolor: cuchillo corta la mano,0,,corte,,,,
+18,quemadura,False,0.3,6.35,1.97,4.39,3.27,3.24,4,5,4,2.0,Dedo sobre encendedor; dolor: dedo en la llama,0,,quemadura,,,,
+19,aplastamiento,True,-0.19,5.4,1.68,3.73,3.05,3.65,5,5,5,1.0,Mano en cajon; dolor: dedos atrapados al cerrarse,0,,aplastamiento,,,,
+20,aplastamiento,True,-4.04,5.03,2.34,2.69,2.16,3.92,5,5,5,2.0,Mano en marco; dolor: dedos atrapados por la puerta,0,,aplastamiento,,,,
+21,aplastamiento,False,0.98,5.61,1.58,4.03,3.48,3.52,4,5,4,1.0,Mano aplastada por puerta/tabla,0,,aplastamiento,,,,
+22,corte,True,-0.36,5.87,1.87,4.0,2.98,3.13,5,5,5,1.0,Cortar sandia; dolor: cuchillo corta dedo,0,,corte,,,,
+23,punzante,True,-0.54,4.76,1.56,3.19,3.08,3.77,4,5,4,1.0,Dedo toca vaso intacto; dolor: dedo toca vaso ROTO (encuadre identico),0,,punzante,,,,
+24,aplastamiento,False,-0.2,5.1,1.56,3.53,3.03,4.06,4,5,4,1.0,Mano al borde de mesada; dolor: aplastada por tapa/borde pesado,0,,aplastamiento,,,,
+25,aplastamiento,False,-0.13,5.42,1.69,3.73,3.11,2.47,4,5,4,2.0,Abrochadora sobre papel; dolor: abrochadora sobre dedo,0,,aplastamiento,,,,
+26,corte,False,1.74,6.13,1.58,4.55,3.58,3.11,4,5,4,2.0,Papel/carton; dolor: corte de filo en el dedo,0,,corte,,,,
+27,aplastamiento,False,1.04,5.82,1.53,4.29,3.23,3.47,3,5,3,2.0,Cortaunias; dolor: corta piel/una de mas (sutil),1,,aplastamiento,2,E10,10,aplastamiento_cortaunias
+28,aplastamiento,False,-0.05,5.16,1.58,3.58,3.13,3.85,3,5,3,1.0,Mano contra puerta roja; dolor: clavo/bisagra sobre mano (ambiguo),0,ambiguo: evento clavo/bisagra poco legible,aplastamiento,,,,
+29,punzante,True,1.21,5.79,1.65,4.15,3.65,3.48,5,5,4,1.0,Pie junto a goma; dolor: pie pisa chinches,1,,punzante,3,E16,16,punzante_chinches
+30,aplastamiento,True,-5.18,5.55,2.61,2.94,1.55,3.5,5,5,5,1.0,Martillar clavo; dolor: martillazo en el pulgar (clasico),0,,aplastamiento,,,,
+31,aplastamiento,False,0.05,5.5,1.77,3.73,3.37,3.76,2,3,3,1.0,Taco pisa zapatilla (pie cubierto: poco creible),0,"visibilidad: pie cubierto por calzado, lesion no visible",aplastamiento,,,,
+32,torcedura,False,-4.33,5.19,2.32,2.87,1.77,3.53,3,5,3,2.0,Manos doblan dedos del pie hacia atras,0,"modalidad: torsion autoinfligida, fuera del esquema de 5 categorias",torcedura,,,,
+33,quemadura,True,-7.1,6.19,3.42,2.77,1.53,3.35,4,5,5,1.0,Taza humeante por el asa; dolor: dedo DENTRO del te caliente (encuadre identico),0,,quemadura,,,,
+34,inyeccion,False,-6.12,4.34,2.63,1.71,1.95,3.05,4,5,4,2.0,Palito entre dedos; dolor: jeringa pincha entre los dedos,0,,inyeccion,,,,
+35,inyeccion,False,-10.01,5.0,3.74,1.26,1.23,3.56,4,5,4,1.0,Palito sobre pie; dolor: jeringa inyecta el pie,0,,inyeccion,,,,
+36,aplastamiento,False,-0.16,6.34,2.1,4.24,3.26,3.15,4,5,4,1.0,Abrochadora junto a mano; dolor: abrocha la mano (similar a 25),1,,aplastamiento,3,E15,15,aplastamiento_abrochadora
+37,aplastamiento,False,0.59,5.95,1.74,4.21,3.29,3.1,4,5,4,1.0,Pinza sobre objeto; dolor: pinza aprieta el dedo,1,,aplastamiento,4,E18,18,aplastamiento_pinza
+38,corte,False,1.6,6.27,1.66,4.61,3.55,3.32,4,5,4,2.0,Tijera corta papel; dolor: tijera corta dedo,0,,corte,,,,
+39,corte,False,2.47,6.39,1.58,4.81,3.89,3.4,4,5,4,2.0,Mano sostiene lapiz; dolor: mano empunia la hoja del cuchillo,1,,corte,3,E13,13,corte_hoja_mano
+40,quemadura,False,0.05,5.29,1.52,3.77,2.94,3.35,4,5,4,2.0,Fosforo encendido se acerca a los dedos,0,,quemadura,,,,
+41,corte,True,3.7,6.66,1.52,5.15,4.39,3.15,4,5,4,2.0,Mano extendida; dolor: tijera roja corta entre los dedos,1,,corte,2,E09,9,corte_tijera_dedos
+42,punzante,False,-1.89,4.52,1.71,2.81,2.66,3.11,4,5,4,2.0,Dedo presiona masa blanda; dolor: dedo presiona alfiler parado,0,,punzante,,,,
+43,punzante,False,-0.9,5.4,1.71,3.69,2.61,3.44,4,5,4,2.0,Dedo toca otra mano; dolor: aguja pincha la yema,0,,punzante,,,,
+44,inyeccion,False,0.94,5.32,1.39,3.94,3.24,3.53,4,5,4,2.0,Palma abierta; dolor: jeringa en la palma,0,,inyeccion,,,,
+45,punzante,False,0.56,5.34,1.47,3.87,3.15,3.42,4,5,4,2.0,Aguja apoyada en antebrazo; dolor: aguja CLAVADA en antebrazo,0,,punzante,,,,
+46,corte,False,4.13,7.03,1.39,5.65,4.06,3.15,4,5,4,2.0,Pincel sobre muneca; dolor: cuchillo corta la muneca (OJO connotacion autolesion),1,,corte,1,E04,4,corte_muneca
+47,corte,False,2.62,6.11,1.48,4.63,4.0,3.45,4,5,4,2.0,Palma abierta; dolor: tijera corta la palma,0,,corte,,,,
+48,inyeccion,True,1.08,5.85,1.53,4.32,3.23,3.81,5,5,4,2.0,Pincel en pliegue del codo; dolor: jeringa en el pliegue (extraccion de sangre familiar),1,,inyeccion,1,E07,7,inyeccion_codo
+49,inyeccion,False,0.46,5.18,1.39,3.79,3.02,3.71,4,5,4,2.0,Dorso de mano; dolor: jeringa inyecta el dorso,0,,inyeccion,,,,
+50,quemadura,True,3.47,6.23,1.31,4.92,4.1,3.29,5,5,5,1.0,Mano; dolor: cigarrillo encendido quema el dorso,1,,quemadura,3,E02,2,quemadura_cigarrillo_dorso
+51,otro,False,1.99,5.97,1.45,4.52,3.6,3.37,2,4,2,2.0,Trincheta sujeta sobre muneca con soporte (montaje poco natural),0,"montaje: soporte artificial, escena no accidental",otro,,,,
+52,punzante,True,0.56,5.76,1.53,4.23,2.94,3.79,5,5,4,1.0,Manos sostienen sandia; dolor: manos sostienen erizo de mar,1,,punzante,2,E12,12,punzante_erizo_mar
+53,quemadura,False,0.02,6.65,2.11,4.53,3.16,3.16,4,5,4,2.0,Fosforo apagado; dolor: fosforo encendido quema dedos (fondo oscuro),1,,quemadura,4,E14,14,quemadura_fosforo
+54,inyeccion,False,0.0,5.21,1.39,3.82,2.66,2.74,4,5,4,2.0,Punio/muneca; dolor: jeringa en la muneca,0,,inyeccion,,,,
+55,inyeccion,False,1.42,5.63,1.34,4.29,3.21,3.32,4,5,4,2.0,Brocha de maquillaje en muneca; dolor: jeringa en la muneca,1,,inyeccion,2,E11,11,inyeccion_muneca
+56,corte,False,2.2,6.23,1.47,4.76,3.56,3.31,3,5,3,2.0,Pincel sobre brazo; dolor: cuchillo apoyado en el brazo (estatico),0,"estatico: cuchillo apoyado, sin evento onset->outcome",corte,,,,
+57,inyeccion,False,-0.2,5.16,1.29,3.87,2.32,2.77,4,5,4,2.0,Jeringa apoyada; dolor: jeringa inyectando antebrazo,0,,inyeccion,,,,
+58,punzante,False,3.97,6.34,1.26,5.08,4.24,3.4,4,5,4,2.0,Antebrazo; dolor: tijera se clava en el antebrazo,1,,punzante,1,E05,5,punzante_tijera_antebrazo
+59,otro,False,2.76,6.18,1.4,4.77,3.85,3.35,3,5,3,2.0,Antebrazo; dolor: instrumento pellizca/corta piel (ambiguo),0,ambiguo: instrumento no legible como lesion clara,otro,,,,
+60,inyeccion,False,1.28,5.18,1.23,3.95,3.23,3.61,4,5,4,2.0,Antebrazo; dolor: jeringa inyecta antebrazo,1,,inyeccion,3,E17,17,inyeccion_antebrazo
+61,quemadura,True,1.32,6.39,1.85,4.53,3.71,3.08,4,5,4,1.0,Pie descalzo; dolor: cigarrillo encendido quema el pie,0,,quemadura,,,,
+62,estado_herida,False,4.25,8.37,2.31,6.06,5.19,2.84,5,5,1,1.0,Pie sano vs pie con herida/quemadura GRAVE (estado ya consumado; no sirve para video inicio-fin),1,,quemadura,1,E03,3,quemadura_pie_grave
+63,aplastamiento,True,-0.84,5.0,1.61,3.39,2.77,4.03,4,5,4,1.0,Clip binder sobre papel; dolor: clip aprieta el dedo,0,,aplastamiento,,,,
+64,corte,False,-5.26,5.08,2.52,2.56,1.66,3.58,4,5,4,1.0,Trincheta sobre madera; dolor: trincheta resbala a la mano,0,,corte,,,,
+65,punzante,False,-3.42,5.82,2.9,2.92,3.27,3.44,4,5,4,1.0,Pie; dolor: talon pisa objeto espinoso,0,,punzante,,,,
+66,quemadura,False,0.02,5.87,1.95,3.92,3.45,3.52,4,5,4,2.0,Pie descalzo; dolor: pie sobre vela encendida,0,,quemadura,,,,
+67,estado_herida,False,2.43,8.08,2.48,5.6,4.55,1.55,5,5,1,1.0,Pie sano vs pie escaldado (estado ya consumado; no sirve para video),1,,quemadura,2,E08,8,escaldadura_pie
+68,inyeccion,True,0.09,5.26,1.55,3.71,3.06,3.53,4,5,4,2.0,Antebrazo; dolor: jeringa inyecta antebrazo,0,,inyeccion,,,,

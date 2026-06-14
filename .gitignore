@@ -40,6 +40,32 @@ results/
 # Data directories
 data/
 
+# --- Forma vieja deprecada (binarios pesados; respaldados por OneDrive) ---
+_deprecated/
+
+# --- Base fuente EPSS (pesada, read-only; se descarga aparte) ---
+EPSS/
+
+# --- Exploracion / pruebas del pipeline (no entregable; OneDrive la respalda) ---
+work/
+
+# --- Binarios pesados del entregable (dataset/): NO se versionan para no inflar el
+# repo de GitHub; OneDrive los respalda. SI se versionan los metadatos del dataset
+# (meta.json, stimuli_index.csv, README.md) para tener procedencia en git. ---
+dataset/**/*.mp4
+dataset/**/*.png
+dataset/**/*.jpg
+dataset/**/*.jpeg
+
+# Subproductos pesados de analysis/ (CSVs si se versionan; imagenes no)
+analysis/contact_sheets/
+analysis/recheck/
+analysis/shortlist/
+
+# Secrets (NUNCA commitear)
+.env
+.env.*
+
 # OS
 .DS_Store
 Thumbs.db

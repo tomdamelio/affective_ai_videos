@@ -1,0 +1,19 @@
+stimulus_id,selection_rank,epss_pair,categoria,category_rank,pain_delta,pain_pain,slug_sugerido,es_ancla,nota_epss
+E01,1,3,corte,4,4.53,6.55,corte_pepino,piloto,Cortar pepino; dolor: cuchillo corta dedo (sangre visible)
+E02,2,50,punzante,3,4.92,6.23,lapiz_punzante_dorso,acordada-redef,OVERRIDE MANUAL 2026-06-13: re-definido de quemadura/cigarrillo a punzante (lapiz punta vs goma). epss_roster.py aun genera quemadura/par50; vinculo EPSS pendiente. Cigarrillo en work/.../extras/
+E03,3,62,quemadura,1,6.06,8.37,quemadura_pie_grave,,Pie sano vs pie con herida/quemadura GRAVE (estado ya consumado; no sirve para video inicio-fin)
+E04,4,46,corte,1,5.65,7.03,corte_muneca,,Pincel sobre muneca; dolor: cuchillo corta la muneca (OJO connotacion autolesion)
+E05,5,58,punzante,1,5.08,6.34,punzante_tijera_antebrazo,,Antebrazo; dolor: tijera se clava en el antebrazo
+E06,6,11,aplastamiento,1,4.32,5.92,aplastamiento_taco_pie,,Pie descalzo; dolor: taco aguja pisa el pie
+E07,7,48,inyeccion,1,4.32,5.85,inyeccion_codo,,Pincel en pliegue del codo; dolor: jeringa en el pliegue (extraccion de sangre familiar)
+E08,8,67,quemadura,2,5.6,8.08,escaldadura_pie,,Pie sano vs pie escaldado (estado ya consumado; no sirve para video)
+E09,9,41,corte,2,5.15,6.66,corte_tijera_dedos,,Mano extendida; dolor: tijera roja corta entre los dedos
+E10,10,27,aplastamiento,2,4.29,5.82,aplastamiento_cortaunias,,Cortaunias; dolor: corta piel/una de mas (sutil)
+E11,11,55,inyeccion,2,4.29,5.63,inyeccion_muneca,,Brocha de maquillaje en muneca; dolor: jeringa en la muneca
+E12,12,52,punzante,2,4.23,5.76,punzante_erizo_mar,,Manos sostienen sandia; dolor: manos sostienen erizo de mar
+E13,13,39,corte,3,4.81,6.39,corte_hoja_mano,,Mano sostiene lapiz; dolor: mano empunia la hoja del cuchillo
+E14,14,53,quemadura,4,4.53,6.65,quemadura_fosforo,,Fosforo apagado; dolor: fosforo encendido quema dedos (fondo oscuro)
+E15,15,36,aplastamiento,3,4.24,6.34,aplastamiento_abrochadora,,Abrochadora junto a mano; dolor: abrocha la mano (similar a 25)
+E16,16,29,punzante,3,4.15,5.79,punzante_chinches,,Pie junto a goma; dolor: pie pisa chinches
+E17,17,60,inyeccion,3,3.95,5.18,inyeccion_antebrazo,,Antebrazo; dolor: jeringa inyecta antebrazo
+E18,18,37,aplastamiento,4,4.21,5.95,aplastamiento_pinza,,Pinza sobre objeto; dolor: pinza aprieta el dedo

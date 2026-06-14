@@ -1,88 +1,84 @@
-# Generación de Estímulos Dinámicos de Dolor mediante IA Generativa
+# Generación de estímulos dinámicos de dolor mediante IA generativa
 
-Este repositorio contiene el código y la documentación para el proyecto de generación de estímulos de video para estudios de emociones (específicamente dolor vs. control). El objetivo es crear un set de videos estandarizados siguiendo lineamientos científicos (basados en *Behnke et al., 2025*), utilizando IA Generativa.
+Código y documentación para generar un set estandarizado de **estímulos de video
+dolor-vs-control** para estudios de procesamiento afectivo, con IA generativa, a partir de
+una base validada. El objetivo: pares (Dolor / Control) donde lo único que varía es la
+interacción dolorosa, manteniendo idénticos fondo, iluminación, anatomía y contexto.
 
-## Descripción del Proyecto
+> **Nota de organización (2026-06):** el proyecto pivoteó de un primer enfoque
+> (`S01–S32`, prompts libres) a la forma actual basada en **EPSS-Limb**. Todo lo del
+> enfoque viejo se movió a [`_deprecated/`](_deprecated/README.md) y no se usa.
+> **Empezá por [`docs/00_ESTRUCTURA.md`](docs/00_ESTRUCTURA.md).**
 
-El proyecto busca superar las limitaciones de los sets de estímulos tradicionales mediante la generación sintética de videos que permitan un control preciso sobre las variables experimentales. Se generan pares de videos (Dolor vs. Control) donde la única variación es la interacción dolorosa, manteniendo idénticos el fondo, la iluminación, la identidad del sujeto y otros factores contextuales.
+## Qué se produce
 
-## Metodología
+Set comprometido: **18 estímulos** `E01…E18` seleccionados sistemáticamente de la base
+**EPSS-Limb** (Meng et al. 2023, CC BY 4.0). Cada estímulo =
 
-El proceso de generación se divide en tres fases principales:
+- **3 stills** (`inicio`, `dolor`, `control`) — `dataset/E0N_<slug>/images/`
+- **2 videos** de ~5 s (`dolor`, `control`) — `dataset/E0N_<slug>/videos/`
+- `meta.json` con procedencia completa (fuente EPSS, modelos, prompts, seeds, costo).
 
-### Fase 1: Extracción de "Ground Truth" (Source Analysis)
-Para asegurar la validez ecológica y evitar problemas de derechos de autor, no se parte de prompts libres sino de descripciones semánticas extraídas de bases de datos de imágenes validadas.
+> La manipulación de **perspectiva** (propia vs. ajena) **no** se genera como videos
+> distintos: se induce en PsychoPy con instrucción + un **borde de color (azul/amarillo)**
+> sobre el mismo video. Por eso el entregable son videos únicos por estímulo, no el doble.
 
-*   **Entrada:** Pares de imágenes originales (Pain / No-Pain).
-*   **Herramienta:** VLM (Visual Language Model) - **Gemini 3**.
-*   **Proceso:** Se procesan las imágenes con un System Prompt diseñado para visión por computadora, obteniendo descripciones densas que aíslan la acción física, anatomía y objetos, eliminando la identidad del sujeto original.
-*   **Lógica:** La descripción de la condición de Dolor (`t_end_P`) actúa como "Maestra". Las descripciones de Control (`t_end_C`) e Inicio (`t_start`) se derivan como variaciones sustractivas.
+## Pipeline (resumen)
 
-### Fase 2: Síntesis de Activos Visuales (Asset Batch Generation)
-Generación de los fotogramas clave (*keyframes*) asegurando consistencia *pixel-perfect* en las áreas no manipuladas (fondo, ropa).
+El estímulo se construye **a partir de la imagen de DOLOR** (único paso "desde cero"); el
+control y el inicio se **derivan de ella con edición local (Kontext)** para garantizar que
+la mano/posición queden idénticas:
 
-*   **Herramientas:** **FLUX.1 [dev]** + **Inpainting API** (vía Fal.ai).
-*   **Protocolo de Generación Inversa:**
-    1.  **Master Anchor (`t_end_P`)**: Se genera primero la imagen de dolor. Esta fija el fondo y la identidad.
-    2.  **Segmentación (ROI)**: Se crea una máscara sobre el objeto causante y la zona anatómica afectada (vía SAM o manual).
-    3.  **Variantes (`t_start` y `t_end_C`)**: Se usa inpainting sobre el *Master Anchor* para generar el estado inicial (objeto preparado) y la condición de control (objeto en reposo sin causar dolor), manteniendo el resto de la imagen intacta.
+1. **Selección** — `analysis/epss_limb_roster.csv` fija el orden `E01…E18` (ver `docs/01_stimulus_selection.md`).
+2. **Dolor** (`flux/dev`, sin moderación de entrada) — primer y único paso text→image.
+3. **Control e Inicio** (`flux-kontext/dev`) — derivados del dolor: el control reemplaza el
+   objeto peligroso por uno **neutro e inofensivo** en la misma posición; el inicio quita el objeto.
+4. **Videos** (Kling v3 Pro, image-to-video, `inicio → dolor/control`) — el último frame se
+   *sella* con el still exacto.
 
-### Fase 3: Interpolación Dinámica (Video Synthesis)
-Conversión de los keyframes estáticos en videos fluidos de corta duración (aprox. 5 segundos).
+| Modelo | Para qué |
+|---|---|
+| `fal-ai/flux/dev` | dolor explícito (open-weights, sin filtro de entrada) |
+| `fal-ai/flux-kontext/dev` | derivar control/inicio (edición local conservando encuadre) |
+| `fal-ai/kling-video/v3/pro/image-to-video` | videos inicio→fin |
 
-*   **Herramienta:** **Kling v1.6 Pro**.
-*   **Técnica:** Image-to-Video con interpolación de keyframes.
-*   **Salida:**
-    *   **Video Dolor:** Transición de `t_start` &rarr; `t_end_P` ("Sudden, visceral impact").
-    *   **Video Control:** Transición de `t_start` &rarr; `t_end_C` ("Slow, controlled movement").
+> Los endpoints `flux-2-pro*` se descartan: su filtro de **entrada** bloquea daño/sangre y
+> no se desactiva (ver `docs/04_content_moderation.md`).
 
-## Estructura del Repositorio
+**Guía operativa completa: [`docs/PLAYBOOK_GENERACION.md`](docs/PLAYBOOK_GENERACION.md).**
 
-*   `scripts/`: Scripts de Python para la ejecución de las distintas etapas del pipeline.
-    *   `generate_ref_img.py`: Generación de imágenes de referencia (Master Anchors).
-    *   `generate_pov_img.py`: Generación de variantes en primera persona (Point of View).
-    *   `generate_poc.py`: Pruebas de concepto (Proof of Concept).
-*   `src/`: Código fuente del paquete `pain_stimuli`.
-*   `img/`: Directorio de almacenamiento para las imágenes generadas.
-*   `ai_prompts.xlsx`: Archivo de control conteniendo los prompts estructurados para cada fase.
+## Estructura del repositorio
 
-## Instalación
+Detalle y convención de nombres en **[`docs/00_ESTRUCTURA.md`](docs/00_ESTRUCTURA.md)**. En corto:
 
-El proyecto utiliza un entorno de Python gestionado. Se recomienda utilizar Conda/Mamba.
+```
+EPSS/        base fuente (read-only)        scripts/     pipeline (todos --id; lib: stimulus.py)
+analysis/    selección E01–E18              dataset/     ENTREGABLES finales (E0N_<slug>/)
+docs/        documentación                  work/        exploración / pruebas (no entregable)
+_deprecated/ forma vieja S01–S32 (no usar)
+```
 
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone <URL_DEL_REPO>
-    cd affective_ai_videos
-    ```
+## Entorno
 
-2.  **Crear el entorno:**
-    ```bash
-    conda env create -f environment.yml
-    conda activate gen-ai
-    ```
+No hay `python` en el PATH; el pipeline corre sobre el env micromamba **`campeones`**
+(`ffmpeg` en `affective-fnirs`). `FAL_KEY` se carga sola desde `./.env`. Detalle en
+`docs/00_ESTRUCTURA.md §7`.
 
-3.  **Instalar en modo editable:**
-    ```bash
-    pip install -e .
-    ```
+```bash
+ENV=/c/Users/au805392/micromamba/envs/campeones
+run() { PYTHONIOENCODING=utf-8 PATH="$ENV:$ENV/Library/bin:$ENV/Scripts:$PATH" python.exe "$@"; }
+run scripts/new_stimulus.py --id E03 --slug <slug> --epss <par> --categoria <cat> --descripcion "<...>"
+```
 
-Requisitos principales:
-*   Python 3.11
-*   `fal-client` (para la API de Fal.ai)
-*   `numpy`, `pandas`, `openpyxl`
+## Estado
 
-## Estado del Proyecto
-
-*   [x] Definición de estándares (adaptación de *Behnke et al., 2025* para video).
-*   [x] **Fase 1** completada para un subset inicial de estímulos de dolor.
-*   [ ] Completar Fase 2 y 3 para todo el set (~96 videos).
-*   [ ] Validación experimental de los estímulos generados.
-
-## Notas Técnicas
-
-*   Se ha optimizado la duración de los videos a **5-10 segundos** para viabilidad técnica y experimental.
-*   El enfoque de "Anchored Inpainting" es crítico para asegurar que los controles sean verdaderos controles experimentales, variando solo el estímulo afectivo.
+- [x] Pivote a EPSS-Limb + selección sistemática `E01–E18` (`analysis/epss_limb_roster.csv`).
+- [x] Pipeline reproducible (scripts `--id`, `stimulus.py` como fuente de rutas/nombres).
+- [x] **E01** (corte de pepino) y **E02** (quemadura de cigarrillo) completos.
+- [ ] Checkpoint con Mariana/Daniela validando E01–E02 antes de producir el set completo.
+- [ ] Generar E03–E18.
+- [ ] Validación experimental del set.
 
 ---
-*Este proyecto es parte de una investigación en curso sobre procesamiento afectivo y dolor.*
+*Investigación en curso sobre procesamiento afectivo y dolor (Tomás D'Amelio; PI Mariana;
+colab. Daniela). Estándares adaptados de Behnke et al. (2025/2026) para video.*

@@ -1,0 +1,107 @@
+{
+  "id": "E07",
+  "slug": "inyeccion_codo",
+  "name": "E07_inyeccion_codo",
+  "epss_pair": "48",
+  "epss_pair_estado": "Vinculado al par EPSS-Limb 48 (Meng et al. 2023, CC BY 4.0). Dolor: jeringa que pincha el pliegue del codo (extraccion de sangre, escena familiar). El control ORIGINAL del par 48 en EPSS es un pincel; aqui se uso un HISOPO de algodon (decision de Tomas, 2026-06-13) por coherencia clinica, conservando la misma silueta (objeto esbelto con mango que entra por arriba y apoya su punta blanda en el pliegue).",
+  "categoria": "inyeccion",
+  "descripcion": "Jeringa que pincha el pliegue del codo (antecubital), extraccion de sangre; control: hisopo de algodon apoyado en la misma posicion, sin pinchar",
+  "fuente": "Par EPSS-Limb 48 (Meng et al. 2023, CC BY 4.0). El still de dolor se genero desde cero con flux/dev (no es un crop del EPSS); inicio y control se derivaron de el por edicion local (Kontext) + inpaint con mascara.",
+  "creado": "2026-06-13",
+  "modificado": "2026-06-13",
+  "estado": "completo",
+  "seleccion": "selection_rank 7 (E07). Se arranco FUERA del orden estricto del roster (E03-E06 pospuestos): decision 2026-06-13 de empezar por un AGENTE DISCRETO que sirva para video inicio-fin y abra una categoria nueva con bajo riesgo de moderacion. E03 (par 62) es un outcome severo ya consumado sin agente discreto (no sirve para video); E04 (corte_muneca) tiene connotacion de autolesion. E07 (inyeccion) cumple: agente discreto (jeringa), categoria nueva, escena clinica familiar de bajo gore. Ver analysis/epss_limb_roster.csv y docs/01_stimulus_selection.md.",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "fotogramas extraidos de los videos (dolor, control)",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "flujo": "El still de DOLOR se genero desde cero con flux/dev (jeringa pinchando el pliegue del codo). El INICIO (brazo limpio, sin objeto) y el CONTROL (hisopo apoyado) se derivaron por edicion local con Kontext conservando brazo/encuadre/luz. El still de dolor FINAL no es el ancla flux directa: es el FRAME 5 del video de dolor (momento de penetracion de la aguja), elegido por Tomas y promovido a still; el video de dolor se regenero para TERMINAR en ese frame. La marca del pinchazo que Kontext no lograba borrar en el inicio se elimino con un paso NUEVO de inpaint por mascara (FLUX Pro Fill).",
+  "resolucion_nota": "El still de dolor proviene de un frame del video Kling (1920x1080). finalize_frames.py tomo esa resolucion como referencia y escalo inicio y control de 1024x576 a 1920x1080. El dolor es 1080p nativo de video; inicio y control son imagenes flux/kontext 576p reescaladas a 1080p (ligeramente mas blandas).",
+  "images": {
+    "dolor": {
+      "archivo": "images/E07_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: jeringa con la aguja penetrando el pliegue del codo, piel tensada alrededor de la aguja (momento de penetracion)",
+      "origen_still_final": "FRAME 5 del video de dolor (Kling), elegido por Tomas (2026-06-13) por leerse como 'inyeccion en progreso' (aguja mas profunda, piel tensada, rojez minima) mejor que el ancla flux. Preservado en work/E07_inyeccion_codo/selected/e07_dolor_endframe5.png y fijado como still de dolor; el video de dolor se regenero para terminar exacto en el (sellado).",
+      "ancla_flux_dev": {
+        "modelo": "fal-ai/flux/dev",
+        "tag_ledger": "e07_dolor_v4",
+        "seed": 23,
+        "guidance_scale": 4.5,
+        "steps": 30,
+        "size": "landscape_16_9",
+        "archivo_ancla": "work/E07_inyeccion_codo/selected/e07_dolor_v4_s23.jpg",
+        "prompt": "Extreme close-up macro photograph of the inner elbow of a human arm during a blood draw. A medical hypodermic syringe with a thin steel needle, the needle inserted straight into the smooth skin of the inner elbow crease. The skin is flat, smooth, even-toned and healthy, with no marks at all except the thin needle going in. The clear plastic syringe barrel is held at a shallow angle pointing into the crease. Anatomically correct human arm, realistic natural skin texture with fine pores. Sharp focus on the needle entering the skin, the rest of the forearm slightly blurred. 8k, raw documentary medical style, soft clinical lighting.",
+        "nota": "Esta ancla flux fue el end_frame del PRIMER video de dolor (inicio -> s23). De ese video se eligio el frame 5 como still de dolor definitivo y se regenero el video. Iteracion del prompt en work/E07_inyeccion_codo/ledger.json (e07_dolor, _v2, _v3, _v4): se removio la sangre/herida hasta una venopuncion clinica limpia; la seed 23 dio la geometria final."
+      }
+    },
+    "control": {
+      "archivo": "images/E07_still_control.png",
+      "rol": "still final de la condicion CONTROL: hisopo de algodon apoyado con su punta blanda sobre el pliegue del codo, en la misma posicion donde entra la aguja, sin pinchar ni danar",
+      "objeto_neutro": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 7,
+        "guidance_scale": 3.0,
+        "archivo": "work/E07_inyeccion_codo/candidates/control_s7.jpg",
+        "anchor": "work/E07_inyeccion_codo/candidates/clean_inpaint_s4002.jpg (el INICIO limpio ya inpaintado)",
+        "metodo": "Se AGREGO el hisopo sobre el inicio limpio (no se derivo del dolor) para heredar la piel sin marca y quedar pixel-consistente con el inicio. Edicion local Kontext: hisopo vertical, punta de algodon blanca apoyada en el centro del pliegue, mango hacia arriba fuera de cuadro. Primer intento dio una punta tipo huevo sobredimensionada; el refinado (seed 7) dio una punta de algodon realista.",
+        "prompt": "Edit this photograph: add an ordinary small cotton swab (a thin cotton-tipped applicator, the kind used in clinics) held vertically, with a MODEST realistic small white cotton bud tip - not oversized, roughly the width of the thin stick - resting gently and flat against the skin of the inner elbow at the center of the crease, the thin plain stick handle extending straight up and out of the top of the frame. The soft cotton rests lightly and causes no harm; the skin stays smooth, flat, even-toned and unbroken with NO mark, NO dent and NO redness. Keep everything else EXACTLY the same: same arm, same position, same framing, same lighting, same teal background."
+      },
+      "racional": "Contraste objeto + desenlace con identico layout: dolor = aguja que pincha (punzante, penetra la piel) vs control = hisopo de algodon que apoya su punta blanda en el MISMO punto (inofensivo). Misma silueta de aproximacion (objeto esbelto con mango que entra por arriba), mismo brazo/encuadre/luz. Hisopo elegido por Tomas sobre el pincel original de EPSS por coherencia clinica."
+    },
+    "inicio": {
+      "archivo": "images/E07_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (pliegue del codo limpio, SIN objeto y SIN marca)",
+      "cadena_derivacion": "1) Kontext 'clean' sobre el ancla de dolor (e07_dolor_v4_s23): se removio la jeringa -> brazo limpio pero quedaba la marca/dimple del pinchazo. 2) Kontext no lograba borrar esa marca (la trata como pliegue natural del codo; convergia aun a guidance 6.0 y multiples seeds). 3) Se elimino con un paso NUEVO de inpaint por MASCARA: FLUX Pro Fill regenera solo la region enmascarada como piel lisa.",
+      "inpaint_final": {
+        "modelo": "fal-ai/flux-pro/v1/fill",
+        "script": "scripts/inpaint_patch.py (creado esta sesion)",
+        "base": "work/E07_inyeccion_codo/candidates/clean_pass2.jpg (brazo sin jeringa, con marca)",
+        "archivo": "work/E07_inyeccion_codo/candidates/clean_inpaint_s4002.jpg",
+        "mask": "circulo cx=485 cy=378 r=125 feather=35 (px sobre 1024x576; blanco=inpaint)",
+        "seed": 4002,
+        "guidance_scale": 18,
+        "steps": 40,
+        "safety_tolerance": "6",
+        "resultado": "Se borro el punto de pinchazo y el pucker radiado; queda un pliegue suave natural del codo (sin marca de aguja). Tomas lo valido como inicio."
+      }
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_video": 1.68,
+    "costo_usd_video_nota": "El video de dolor se genero DOS veces ($0.56 c/u): v1 terminaba en el ancla s23; v2 (definitivo) termina en el frame 5 (penetracion). Control: $0.56. Total video = 3 x $0.56 = $1.68.",
+    "estructura": "inicio compartido = still 'inicio' (pliegue limpio, sin objeto); el objeto ENTRA durante el clip",
+    "dolor": {
+      "archivo": "videos/E07_video_dolor.mp4",
+      "start_frame": "images/E07_still_inicio.png (pliegue limpio)",
+      "end_frame": "images/E07_still_dolor.png (aguja penetrando, frame 5)",
+      "motion_prompt": "Hold the tight close-up on the bare inner elbow resting still. A medical syringe enters from the top; its thin steel needle moves down and pierces into the skin of the inner-elbow crease for a blood draw, the skin pressed and punctured at the point of entry as the needle goes in. A clinical venipuncture, the needle inserting into the arm.",
+      "negative_prompt": "blur, distort, low quality, warped, deformed, extra fingers",
+      "cfg_scale": 0.5,
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E07_video_control.mp4",
+      "start_frame": "images/E07_still_inicio.png (pliegue limpio)",
+      "end_frame": "images/E07_still_control.png (hisopo de algodon apoyado, sin pinchar)",
+      "motion_prompt": "Hold the tight close-up on the bare inner elbow resting calmly. An ordinary cotton swab enters from the top and comes to rest with its soft white cotton tip pressing gently on the skin of the inner elbow - in the same spot the needle would enter - without causing any harm. The skin stays smooth, intact and unharmed. A calm, safe, soft and painless movement, no needle, no piercing, no mark.",
+      "negative_prompt": "blur, distort, low quality, warped, deformed, extra fingers",
+      "cfg_scale": 0.5,
+      "sellado": true
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E07_frame_dolor_1..6.png (regenerados tras el sellado; frame 6 = still de dolor)",
+    "control": "frames/E07_frame_control_1..6.png (frame 6 = still de control)"
+  },
+  "herramientas_nuevas_sesion": {
+    "scripts/inpaint_patch.py": "Inpaint LOCAL por mascara con FLUX Pro Fill (fal-ai/flux-pro/v1/fill) para borrar una marca/feature que Kontext no quita (la mascara circular se genera sola con --cx --cy --r --feather). Usado para limpiar la marca del pinchazo en el inicio.",
+    "scripts/derive_variant.py": "Se agregaron flags --seed/--guidance/--steps (antes seed=1001 y guidance=2.5 estaban hardcodeados, por eso re-correr el mismo prompt daba el mismo resultado)."
+  },
+  "costo_usd_aprox_total": 2.3,
+  "costo_usd_aprox_total_nota": "~$1.68 video + ~$0.6 imagenes (flux/dev dolor x6, derivaciones Kontext del control/inicio y pasadas de heal, 3 inpaints FLUX Pro Fill). Por encima del nominal ~$1.4 por el segundo video de dolor y las iteraciones de limpieza del inicio."
+}
