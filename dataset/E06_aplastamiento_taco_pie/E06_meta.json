@@ -1,0 +1,108 @@
+{
+  "id": "E06",
+  "slug": "aplastamiento_taco_pie",
+  "name": "E06_aplastamiento_taco_pie",
+  "epss_pair": "11",
+  "epss_pair_estado": "Vinculado al par EPSS-Limb 11 (Meng et al. 2023, CC BY 4.0). Dolor: taco aguja (stiletto) que pisa/aplasta el pie descalzo. El objeto neutro del control en esta version es un PINCEL DE MAQUILLAJE (decision de Tomas, 2026-06-14), no el objeto original de EPSS, elegido por ser INOFENSIVO y NO CALZABLE (ver nota_control).",
+  "categoria": "aplastamiento",
+  "descripcion": "Pie descalzo; dolor: taco aguja (stiletto) baja y se clava/aplasta el frente del empeine, el pie reacciona levantando los dedos; control: pincel de maquillaje que apoya su cabeza blanda en el mismo punto, sin danar",
+  "fuente": "Par EPSS-Limb 11 (Meng et al. 2023, CC BY 4.0). El still de dolor se genero desde cero con flux/dev (no es un crop del EPSS); inicio y control se derivaron por edicion local (Kontext). Los stills FINALES de dolor y control son FRAMES de los videos Kling, elegidos por Tomas y promovidos (ver flujo).",
+  "creado": "2026-06-13",
+  "modificado": "2026-06-14",
+  "estado": "completo",
+  "seleccion": "selection_rank 6 (E06). Categoria nueva (aplastamiento) con AGENTE DISCRETO (el taco aguja), elegida sobre E14 (quemadura/fosforo) por menor riesgo del filtro de moderacion de Fal y porque aplastamiento tiene 4 estimulos en el roster (E06/E10/E15/E18) -> la receta se reusa. Ver analysis/epss_limb_roster.csv.",
+  "moderacion_nota": "El framing 'amenaza inminente, sin herida' (taco que presiona/hunde la piel, SIN sangre ni herida abierta) paso flux/dev sin problemas (HTTP 200, sin 422). Ver memoria project_fal_content_filter.",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control)",
+    "frames/": "fotogramas extraidos de los videos (dolor, control)",
+    "videos/": "2 videos finales (dolor, control)"
+  },
+  "flujo": "El still de DOLOR se genero desde cero con flux/dev (taco aguja clavandose en el frente del pie, dedos abiertos). El INICIO (pie limpio, sin objeto) y el CONTROL (pincel apoyado) se derivaron por edicion local Kontext conservando pie/encuadre/luz. Los stills FINALES de dolor y control NO son las anclas directas: son FRAMES de los videos Kling, elegidos por Tomas y promovidos a still, regenerando luego el video para terminar exacto en ellos (sellado). Dolor: end-frame = un frame intermedio del video (taco clavado MODERADO, dedos empezando a levantarse) tras varias iteraciones para reducir el clavado y dejar UN solo levante. Control: end-frame = el frame del pincel VERTICAL descendiendo (espeja la linea vertical del taco).",
+  "nota_control": "El objeto neutro paso por iteraciones. Primero se probo una PANTUFLA de peluche, pero 'pantufla' es semanticamente calzado y Kontext insistia en CALZAR el pie de abajo (aparecian dos pies) en vez de apoyar el objeto encima. Se cambio a un PINCEL DE MAQUILLAJE: no es calzable (mata la confusion), lee como claramente inofensivo, y su silueta (mango fino + cabeza redonda) ESPEJA la del stiletto (taco fino + cuerpo del zapato) invirtiendo la amenaza (cerdas blandas vs punta dura). Precedente: E07 uso un objeto esbelto analogo (hisopo).",
+  "resolucion_nota": "Los stills de dolor y control provienen de frames de video Kling (1920x1080). finalize_frames.py tomo 1920x1080 como referencia (del dolor) y escalo el inicio (imagen Kontext 1024x576) a 1920x1080 (ligeramente mas blando). Dolor y control son 1080p nativo de video.",
+  "images": {
+    "dolor": {
+      "archivo": "images/E06_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: taco aguja del stiletto clavandose en el frente del empeine del pie descalzo, dedos abiertos empezando a levantarse en reaccion de dolor (clavado moderado)",
+      "origen_still_final": "FRAME intermedio del video de dolor (Kling, 1920x1080), elegido por Tomas (2026-06-14): taco clavado MENOS que el pico extremo + dedos empezando a levantarse. Preservado en work/E06_aplastamiento_taco_pie/selected/e06_dolor_lift_endframe.png y fijado como still; el video de dolor se regenero para terminar exacto en el (sellado).",
+      "ancla_flux_dev": {
+        "modelo": "fal-ai/flux/dev",
+        "tag_ledger": "e06_dolorF_a",
+        "seed": 202,
+        "guidance_scale": 5.5,
+        "steps": 30,
+        "size": "landscape_16_9",
+        "archivo_ancla": "work/E06_aplastamiento_taco_pie/selected/e06_dolorF_a_s202.jpg",
+        "prompt": "Extreme close-up macro photograph of two different human feet. Below: a single completely bare human foot, lying flat on a dark wooden floor. Above it: another person's foot wearing a glossy black stiletto high-heeled shoe; much of the shoe is visible, its pointed toe, arched body and slender sharp heel. The sharp pointed stiletto heel-tip presses down HARD and DEEP into the middle of the instep, the top of the bare foot, crushing it: the skin is pushed inward into a deep visible pit under the heel, blanched white, the surrounding skin bulging and stretched taut. The bare toes are splayed wide apart and clenched, curling and straining in sharp pain, the tendons on the top of the foot standing out tight. Anatomically correct, five toes. Skin intact, no wound, no blood, no cut. Razor-sharp focus on the deep dent where the heel digs in and the straining toes. 8k raw documentary style, dramatic lighting.",
+        "nota": "Para que sean DOS pies distintos (y no el pie de abajo calzando el zapato) hubo que decirlo explicito ('two different human feet ... another person's foot'). La punta del taco aterriza de forma natural en el FRENTE del pie / base de los dedos: forzar el empeine ALTO con un taco (parte trasera del zapato) es geometricamente antinatural y flux falla o revierte a 'pie dentro del zapato'. Iteracion completa del prompt en ledger.json (e06_dolor, _B.._H): seeds, posicion del contacto, hundido y crispado de dedos."
+      }
+    },
+    "control": {
+      "archivo": "images/E06_still_control.png",
+      "rol": "still final de la condicion CONTROL: pincel de maquillaje vertical descendiendo, su cabeza de cerdas blandas apoyada en el frente del pie (mismo punto donde se clava el taco), sin danar",
+      "origen_still_final": "FRAME 3 del video de control (Kling, 1920x1080), elegido por Tomas (2026-06-14) por mostrar el pincel VERTICAL apoyandose (espeja la linea vertical del taco) mejor que el frame final acostado. Preservado en work/E06_aplastamiento_taco_pie/selected/e06_control_endframe.png; el video de control se regenero para terminar en el (sellado).",
+      "objeto_neutro": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 1001,
+        "guidance_scale": 3.5,
+        "archivo": "work/E06_aplastamiento_taco_pie/candidates/control.jpg",
+        "anchor": "work/E06_aplastamiento_taco_pie/selected/e06_dolorF_a_s202.jpg (el ancla de dolor)",
+        "metodo": "Edicion local Kontext sobre el dolor: se removio la segunda pierna + el stiletto y se agrego un PINCEL DE MAQUILLAJE apoyando su cabeza blanda en el mismo punto (UN solo pie). Guidance 3.5 (mas alto que el default 2.5) para forzar la remocion de la segunda pierna.",
+        "prompt": "Edit this photograph so there is only ONE bare foot in the whole image, lying flat on the dark wooden floor. COMPLETELY remove the second leg, the second foot and the black stiletto shoe with its sharp heel - none of them appear anywhere, no second foot and no shoe. In their place, a large soft makeup brush rests gently on top of the bare foot: its round fluffy soft bristle head lies lightly on the instep exactly where the stiletto heel was, and its slender handle points straight up and away from the skin. Only the soft bristles touch the skin, lightly, with no point and no pressure. Remove the dent, the pale pressure mark and any redness from the skin - the instep is smooth, intact and unharmed. Keep the one bare foot in the EXACT same position and pose, same toes, same framing, camera angle, lighting, wooden floor and background. Just one bare foot on the floor with a harmless soft makeup brush resting on its instep, the foot unharmed."
+      },
+      "racional": "Contraste objeto + desenlace con identico layout: dolor = taco aguja que se clava (punzante, hunde la piel, el pie reacciona) vs control = pincel de maquillaje que apoya su cabeza blanda en el MISMO punto (inofensivo, pie en calma). Misma silueta de aproximacion (objeto esbelto vertical que entra por arriba), mismo pie/encuadre/luz."
+    },
+    "inicio": {
+      "archivo": "images/E06_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (pie descalzo limpio, plano, SIN objeto y SIN hundido)",
+      "objeto_neutro": null,
+      "derivacion": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 1001,
+        "guidance_scale": 2.5,
+        "archivo": "work/E06_aplastamiento_taco_pie/candidates/clean.jpg",
+        "anchor": "work/E06_aplastamiento_taco_pie/selected/e06_dolorF_a_s202.jpg (el ancla de dolor)",
+        "metodo": "Edicion local Kontext 'clean' sobre el dolor: se removio el stiletto + la segunda pierna/pie y el hundido/marca, dejando UN solo pie descalzo plano y limpio. Los dedos quedan relajados (apropiado para el 'antes'; se tensan/levantan durante el video de dolor).",
+        "prompt": "Keep this photograph exactly the same - same bare foot, same toes, same wooden floor, same camera angle, same lighting and background. COMPLETELY remove the black high-heeled stiletto shoe and the second leg and foot wearing it - there is NO shoe, NO heel and NO second foot anywhere in the image. Remove the dent, the pale pressure mark and any redness from the top of the bare foot - the skin of the instep is smooth, intact and unharmed. The single bare foot now rests calmly and flat on the empty wooden floor, nothing touching it, the top of the foot smooth and clean. Only the one bare foot on the bare wooden floor."
+      }
+    }
+  },
+  "videos": {
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_video": 4.48,
+    "costo_usd_video_nota": "Dolor se renderizo 6 veces ($0.56 c/u) afinando: (1) cfg 0.5; (2) motion reforzado cfg 0.7; (3) tras cambiar el dolor a dolorF_a; (4) toe-lift cfg 0.8; (5) end=frame_4 cfg 0.7; (6) end=cur_20 + 1 solo levante cfg 0.4 (definitivo). Control se renderizo 2 veces: (1) end=brush acostado; (2) end=frame_3 brush vertical (definitivo). Total = 8 x $0.56 = $4.48.",
+    "estructura": "inicio compartido = still 'inicio' (pie limpio, sin objeto); el objeto ENTRA durante el clip",
+    "dolor": {
+      "archivo": "videos/E06_video_dolor.mp4",
+      "start_frame": "images/E06_still_inicio.png (pie limpio, plano)",
+      "end_frame": "images/E06_still_dolor.png (taco clavado moderado, dedos empezando a levantarse)",
+      "motion_prompt": "Hold the tight close-up on the bare foot resting flat on the dark wooden floor. A woman's black stiletto high-heeled shoe enters from the top and presses its slender heel down onto the top of the bare foot, pressing in firmly but only a little, not too deep. In one single slow reaction to the pain, the bare toes rise and curl upward off the floor ONE time and stay lifted, the foot tensing as the raised toes hold their position. A single smooth lift of the toes - no bouncing, no second lift, no repeating, the motion happens only once. No blood, no wound, no cut.",
+      "negative_prompt": "blur, distort, low quality, warped, deformed, extra fingers",
+      "cfg_scale": 0.4,
+      "cfg_nota": "Se bajo cfg de 0.7/0.8 a 0.4 para evitar el doble rebote del levante (cfg alto sobre-dramatizaba el movimiento). Bajo cfg, el interpolado inicio->end da UN solo levante suave.",
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E06_video_control.mp4",
+      "start_frame": "images/E06_still_inicio.png (pie limpio, plano)",
+      "end_frame": "images/E06_still_control.png (pincel vertical apoyado, sin danar)",
+      "motion_prompt": "Hold the tight close-up on the bare foot resting flat and calm on the dark wooden floor. An ordinary soft makeup brush enters from the top and comes to rest with its soft fluffy bristle head lying gently on the instep - in the same spot where the heel would press - without causing any harm. The skin stays smooth, intact and unharmed, the toes relaxed. A calm, safe, soft and painless movement, no heel, no sharp object, no mark.",
+      "negative_prompt": "blur, distort, low quality, warped, deformed, extra fingers",
+      "cfg_scale": 0.5,
+      "sellado": true
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E06_frame_dolor_1..6.png (regenerados tras el sellado; frame 6 = still de dolor)",
+    "control": "frames/E06_frame_control_1..6.png (frame 6 = still de control)"
+  },
+  "cambios_pipeline_sesion": {
+    "stimulus.archive_if_exists()": "Politica NO-OVERWRITE (2026-06-14): antes de escribir cualquier salida existente se archiva en <dir>/_archive/<stem>__vNN. La llaman run_videos.py, seal_endframe.py (antes hacia unlink() de los frames -> se perdian frames de corridas previas), finalize_frames.py, derive_variant.py, pilot_v1.py. Ver docs/00_ESTRUCTURA.md seccion 9.",
+    "run_videos.py --cfg": "Se agrego el flag --cfg (cfg_scale Kling, default 0.5) para controlar cuanto sigue Kling el prompt de movimiento."
+  },
+  "costo_usd_aprox_total": 5.5,
+  "costo_usd_aprox_total_nota": "~$4.48 video (8 renders: 6 dolor afinando clavado/levante + 2 control) + ~$1 imagenes (flux/dev dolor ~27 gens iterando posicion/hundido/dedos + derivaciones Kontext de control (pantufla descartada -> pincel) e inicio). Muy por encima del nominal ~$1.4, casi todo por los 6 re-renders del video de dolor."
+}
