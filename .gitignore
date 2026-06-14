@@ -66,6 +66,9 @@ analysis/shortlist/
 .env
 .env.*
 
+# Lockfile transitorio del index (politica de concurrencia, ver stimulus._IndexLock)
+*.lock
+
 # OS
 .DS_Store
 Thumbs.db

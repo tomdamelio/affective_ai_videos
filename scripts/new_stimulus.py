@@ -5,14 +5,11 @@ Ej:
       --categoria quemadura --descripcion "Mano sobre olla hirviendo"
 """
 import argparse
-import csv
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import Stim, INDEX  # noqa: E402
-
-COLS = ["id", "slug", "epss_pair", "categoria", "descripcion", "n_images", "n_videos", "estado", "creado"]
+from stimulus import Stim, add_index_row  # noqa: E402
 
 
 def main() -> None:
@@ -25,21 +22,13 @@ def main() -> None:
     ap.add_argument("--fecha", required=True, help="YYYY-MM-DD (no hay reloj en el script)")
     args = ap.parse_args()
 
-    rows = []
-    if INDEX.exists():
-        with open(INDEX, newline="", encoding="utf-8") as f:
-            rows = list(csv.DictReader(f))
-    if any(r["id"] == args.id for r in rows):
-        sys.exit(f"Ya existe {args.id} en el index.")
-
-    rows.append({"id": args.id, "slug": args.slug, "epss_pair": args.epss,
-                 "categoria": args.categoria, "descripcion": args.descripcion,
-                 "n_images": 0, "n_videos": 0, "estado": "en_proceso", "creado": args.fecha})
-    INDEX.parent.mkdir(parents=True, exist_ok=True)
-    with open(INDEX, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=COLS)
-        w.writeheader()
-        w.writerows(rows)
+    try:
+        add_index_row({"id": args.id, "slug": args.slug, "epss_pair": args.epss,
+                       "categoria": args.categoria, "descripcion": args.descripcion,
+                       "n_images": 0, "n_videos": 0, "estado": "en_proceso",
+                       "creado": args.fecha})
+    except ValueError as e:
+        sys.exit(str(e))
 
     st = Stim(args.id, args.slug, args.epss, args.categoria, args.descripcion)
     st.make_dirs()

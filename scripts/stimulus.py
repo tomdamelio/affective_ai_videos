@@ -37,13 +37,17 @@ Uso en un script:
     st.candidates                     # work/E01_.../candidates/
 """
 import csv
+import json
 import os
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = ROOT / "dataset"
 WORK = ROOT / "work"
 INDEX = DATASET / "stimuli_index.csv"
+INDEX_COLS = ["id", "slug", "epss_pair", "categoria", "descripcion",
+              "n_images", "n_videos", "estado", "creado"]
 
 
 def _load_dotenv() -> None:
@@ -160,6 +164,13 @@ class Stim:
         return self.work / "ledger.json"
 
     @property
+    def motion_path(self) -> Path:
+        """Prompts de movimiento de video por estimulo (JSON {dolor, control}).
+        Por-estimulo a proposito: asi varias sesiones en paralelo NO editan el
+        run_videos.py compartido (que antes tenia los MOTION hardcodeados)."""
+        return self.work / "motion.json"
+
+    @property
     def video_frames(self) -> Path:
         return self.work / "video_frames"
 
@@ -182,6 +193,75 @@ def _load_rows() -> list[dict]:
         return []
     with open(INDEX, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
+
+
+def _write_rows(rows, cols=None) -> None:
+    cols = cols or (list(rows[0].keys()) if rows else INDEX_COLS)
+    INDEX.parent.mkdir(parents=True, exist_ok=True)
+    with open(INDEX, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        w.writerows(rows)
+
+
+class _IndexLock:
+    """Lock de archivo atomico (cross-platform) para serializar escrituras al
+    stimuli_index.csv cuando hay varias sesiones en paralelo (evita la race de
+    read-modify-write que pierde filas). Best-effort: si un lock queda colgado
+    mas de `timeout`s se asume stale, se rompe y se reintenta."""
+
+    def __init__(self, timeout: float = 60, poll: float = 0.15):
+        self.lockpath = INDEX.parent / (INDEX.name + ".lock")
+        self.timeout = timeout
+        self.poll = poll
+        self.fd = None
+
+    def __enter__(self):
+        start = time.time()
+        while True:
+            try:
+                self.fd = os.open(str(self.lockpath), os.O_CREAT | os.O_EXCL | os.O_RDWR)
+                return self
+            except FileExistsError:
+                if time.time() - start > self.timeout:
+                    try:
+                        self.lockpath.unlink()
+                    except FileNotFoundError:
+                        pass
+                    start = time.time()
+                time.sleep(self.poll)
+
+    def __exit__(self, *exc):
+        if self.fd is not None:
+            os.close(self.fd)
+            self.fd = None
+        try:
+            self.lockpath.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def add_index_row(row: dict) -> None:
+    """Agrega una fila al index de forma segura ante concurrencia (lock)."""
+    with _IndexLock():
+        rows = _load_rows()
+        if any(r["id"] == row["id"] for r in rows):
+            raise ValueError(f"Ya existe {row['id']} en el index.")
+        rows.append({c: row.get(c, "") for c in INDEX_COLS})
+        _write_rows(rows, INDEX_COLS)
+
+
+def update_index_fields(sid: str, **fields) -> None:
+    """Actualiza campos de la fila `sid` de forma segura ante concurrencia (lock).
+    Asi finalize_frames.py / run_videos.py pueden tocar el index sin pisarse."""
+    with _IndexLock():
+        rows = _load_rows()
+        if not any(r["id"] == sid for r in rows):
+            raise KeyError(f"{sid} no esta en el index")
+        for r in rows:
+            if r["id"] == sid:
+                r.update({k: str(v) for k, v in fields.items()})
+        _write_rows(rows, list(rows[0].keys()))
 
 
 def get_stim(sid: str) -> Stim:

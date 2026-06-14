@@ -3,3 +3,8 @@ E01,corte_pepino,3,corte,Cortar pepino; el cuchillo corta el dedo indice,3,2,com
 E02,lapiz_punzante_dorso,50,punzante,Lapiz con la punta apoyada presionando el dorso de la mano (punzante; derivado de la sesion del par 50 - NO es render fiel del cigarrillo),3,2,completo,2026-06-13
 E07,inyeccion_codo,48,inyeccion,Jeringa que pincha el pliegue del codo (extraccion de sangre); control: hisopo de algodon apoyado en la misma posicion,3,2,completo,2026-06-13
 E06,aplastamiento_taco_pie,11,aplastamiento,Pie descalzo; dolor: taco aguja (stiletto) pisa el empeine,3,2,completo,2026-06-13
+E04,corte_dorso_mano,46,corte,Dorso de la mano; dolor: cuchillo corta/presiona el dorso de la mano (movido FUERA de la muneca por connotacion de autolesion); control: pincel,0,0,en_proceso,2026-06-14
+E05,punzante_tijera_antebrazo,58,punzante,Antebrazo; dolor: la punta de una tijera se clava en el antebrazo; control: objeto romo/blando apoyado,0,0,en_proceso,2026-06-14
+E09,corte_tijera_dedos,41,corte,Mano extendida; dolor: tijera roja cortando entre los dedos; control: objeto blando en el hueco,0,0,en_proceso,2026-06-14
+E11,inyeccion_muneca,55,inyeccion,Muneca; dolor: jeringa inyecta la muneca (clinico); control: hisopo de algodon en la misma posicion,0,0,en_proceso,2026-06-14
+E13,corte_hoja_mano,39,corte,Mano; dolor: la mano empuna/cierra sobre la hoja del cuchillo; control: la mano empuna un objeto romo (regla/lapiz),0,0,en_proceso,2026-06-14

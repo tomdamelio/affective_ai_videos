@@ -218,3 +218,24 @@ pipeline la **archiva** automáticamente en un `_archive/` al lado, versionada
   únicos por corrida y **nunca** `rm -f`/`mv` que pise; si hace falta limpiar, mover a
   `_archive/`. Si un frame intermedio de un video sirve, **copiarlo a un nombre estable
   antes** del siguiente render (que refresca `frames/`).
+
+---
+
+## 10. Pipeline seguro para sesiones en paralelo
+
+Para generar varios estímulos a la vez (varias ventanas de Claude sobre el MISMO repo),
+el pipeline evita que las sesiones se pisen:
+
+- **Motion prompts por estímulo:** `run_videos.py` lee los prompts de movimiento de
+  `work/<id>/motion.json` (`{"dolor": …, "control": …}`) vía `load_motion()`. Cada sesión
+  edita SU propio `motion.json` y **no** toca `run_videos.py` (el dict `MOTION` del script
+  quedó solo como fallback/template). Antes `MOTION` era global y dos sesiones se pisaban.
+- **Index con lock:** las escrituras a `stimuli_index.csv` (alta de fila en
+  `new_stimulus.py`, `n_images` en `finalize_frames.py`, `n_videos`/`estado` en
+  `run_videos.py`) pasan por `stimulus.add_index_row` / `update_index_fields`, que toman un
+  lock de archivo atómico (`stimuli_index.csv.lock`, gitignored) y serializan el
+  read-modify-write. Evita perder filas por la race de concurrencia.
+- **Regla operativa:** cada sesión trabaja UN estímulo y solo toca `work/<id>/` y
+  `dataset/<id>/` de SU id. El único archivo compartido que puede tocar es el index (ya
+  protegido por lock) — **nunca** editar `run_videos.py`/`stimulus.py` desde una sesión de
+  generación. Combinar con la política NO-OVERWRITE (§9).

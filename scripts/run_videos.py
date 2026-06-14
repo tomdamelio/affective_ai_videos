@@ -18,6 +18,7 @@ Uso:
 import argparse
 import base64
 import io
+import json
 import os
 import sys
 import time
@@ -27,7 +28,7 @@ import requests
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim, archive_if_exists  # noqa: E402
+from stimulus import get_stim, archive_if_exists, update_index_fields, CONDITIONS  # noqa: E402
 from seal_endframe import seal_condition  # noqa: E402
 
 MODELS = {
@@ -37,7 +38,9 @@ MODELS = {
 
 # Prompts de movimiento. Inicio compartido = still 'inicio' (extremidad limpia,
 # sin objeto); el objeto ENTRA durante el clip. Ajustar el texto por estimulo.
-# TODO: mover a meta por estimulo. Actual: E06 (taco aguja aplasta el empeine del pie).
+# MOTION por estimulo: se lee de work/<id>/motion.json ({dolor, control}) via load_motion().
+# El dict de abajo es solo un FALLBACK/template (ultimo: E06) para uso suelto si no existe
+# el motion.json. En paralelo CADA sesion crea su propio motion.json y NO toca este archivo.
 MOTION = {
     "dolor": (
         "Hold the tight close-up on the bare foot resting flat on the dark wooden "
@@ -65,6 +68,21 @@ def data_uri(path: Path) -> str:
     buf = io.BytesIO()
     img.save(buf, format="JPEG", quality=95)
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def load_motion(st) -> dict:
+    """Prompts de movimiento del estimulo: de work/<id>/motion.json si existe
+    ({\"dolor\": ..., \"control\": ...}), si no del MOTION template de este script."""
+    mp = st.motion_path
+    if mp.exists():
+        data = json.loads(mp.read_text(encoding="utf-8"))
+        missing = [c for c in CONDITIONS if c not in data]
+        if missing:
+            sys.exit(f"{mp} no tiene los prompts: {missing}")
+        print(f"Motion: {mp.relative_to(st.work.parent.parent)}")
+        return data
+    print(f"Motion: (no hay {mp.name}; uso el MOTION template del script)")
+    return MOTION
 
 
 def submit_and_wait(model: str, payload: dict, key: str) -> dict:
@@ -99,6 +117,7 @@ def main() -> None:
 
     st = get_stim(args.id)
     model, price = MODELS[args.tier]
+    motion = load_motion(st)
     # INICIO compartido = still 'inicio' (extremidad limpia, sin el objeto).
     # FIN: dolor -> still 'dolor' (objeto + dano); control -> still 'control'
     #      (objeto NEUTRO que reemplaza al peligroso, misma posicion, sin dano).
@@ -131,7 +150,7 @@ def main() -> None:
     for c in conds:
         print(f"\n=== {c} ===")
         payload = {
-            "prompt": MOTION[c],
+            "prompt": motion[c],
             "start_image_url": start_uri,
             "end_image_url": data_uri(ends[c]),
             "duration": args.duration,
@@ -146,6 +165,12 @@ def main() -> None:
         print(f"  -> {out.relative_to(st.dataset.parent.parent)}")
         # Sellar el ultimo frame con el still aprobado (el video termina EXACTO en el).
         seal_condition(st, c)
+
+    # Actualizar el index (con lock, seguro ante sesiones en paralelo).
+    n = sum(1 for cc in CONDITIONS if st.video(cc).exists())
+    estado = "completo" if n == len(CONDITIONS) else "en_proceso"
+    update_index_fields(st.id, n_videos=n, estado=estado)
+    print(f"\nIndex: n_videos={n}, estado={estado}")
 
 
 if __name__ == "__main__":

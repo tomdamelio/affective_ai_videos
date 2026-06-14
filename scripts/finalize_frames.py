@@ -13,14 +13,13 @@ Ej:
       --control work/E02_.../candidates/control.jpg
 """
 import argparse
-import csv
 import sys
 from pathlib import Path
 
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from stimulus import get_stim, INDEX, ROOT, archive_if_exists  # noqa: E402
+from stimulus import get_stim, ROOT, archive_if_exists, update_index_fields  # noqa: E402
 
 
 def to_png(src: Path, dst: Path, size=None) -> None:
@@ -51,15 +50,8 @@ def main() -> None:
     to_png(Path(args.inicio),  st.image("inicio"),  ref)
     to_png(Path(args.control), st.image("control"), ref)
 
-    # actualizar n_images en el index
-    rows = list(csv.DictReader(open(INDEX, newline="", encoding="utf-8")))
-    for r in rows:
-        if r["id"] == st.id:
-            r["n_images"] = 3
-    with open(INDEX, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=rows[0].keys())
-        w.writeheader()
-        w.writerows(rows)
+    # actualizar n_images en el index (con lock, seguro ante sesiones en paralelo)
+    update_index_fields(st.id, n_images=3)
     print(f"\nStills finales en {st.images_dir.relative_to(ROOT)}")
     print("Siguiente: python scripts/run_videos.py --id", st.id)
 
