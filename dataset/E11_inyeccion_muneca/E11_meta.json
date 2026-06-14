@@ -1,0 +1,112 @@
+{
+  "id": "E11",
+  "slug": "inyeccion_muneca",
+  "name": "E11_inyeccion_muneca",
+  "epss_pair": "55",
+  "categoria": "inyeccion",
+  "descripcion": "Inyeccion en la mano/muneca (mano abierta palma arriba); dolor: jeringa con aguja fina que entra en la piel cerca de la base de la palma/muneca (escena clinica de bajo gore, sin agujero ni sangre); control: hisopo de algodon apoyado con su punta blanda en el mismo punto, sin pinchar",
+  "fuente": "Par EPSS-Limb 55 (Meng et al. 2023, CC BY 4.0). Receta reusada de E07 (inyeccion_codo): el still de dolor se genero desde cero con flux/dev; inicio y control se derivaron por edicion local (Kontext).",
+  "creado": "2026-06-14",
+  "modificado": "2026-06-14",
+  "estado": "completo",
+  "estado_nota": "3 stills finalizados (images/) y validados por Tomas uno por uno (dolor -> inicio -> control), y 2 videos generados (Kling v3pro, 5s) y sellados (ultimo frame = still). Estimulo completo.",
+  "seleccion": "Categoria inyeccion (par EPSS 55). Misma logica de contraste objeto+desenlace que E07 (par 48): aguja punzante vs hisopo de algodon inofensivo en el mismo punto.",
+  "validacion_nota": "El primer intento de dolor (con wording 'skin pushed inward and dented / penetrating the surface') generaba un AGUJERO/herida en la piel -> rechazado por Tomas (2026-06-14). Se regeneraron 8 escenas variadas en primerisimo primer plano y luego una segunda tanda estilo 'A' (mano palma-arriba, jeringa vertical desde arriba). Tomas valido e11d_a_topvert_s23 (aguja apoyada/entrando con piel intacta, sin agujero). Aprendizaje: para 'inyeccion sin gore' NO usar wording de dentado/penetracion; usar 'needle rests against / just slides under intact skin, NO hole, NO red dot'.",
+  "estructura": {
+    "images/": "3 stills canonicos (inicio, dolor, control), 1024x576",
+    "frames/": "(pendiente) fotogramas de los videos",
+    "videos/": "(pendiente) 2 videos finales (dolor, control)"
+  },
+  "flujo": "El still de DOLOR se genero desde cero con flux/dev (mano abierta palma arriba, jeringa vertical desde arriba, aguja fina entrando en la piel cerca de la base de la palma/muneca, piel intacta sin agujero). El INICIO (mano limpia, sin objeto) se derivo del dolor con Kontext (quita la jeringa y el punto rojo de la entrada) -> esta vez NO hizo falta inpaint (el punto era chico, no un dimple profundo). El CONTROL (hisopo de algodon) se AGREGO con Kontext sobre el inicio ya limpio (no sobre el dolor) para heredar la piel sin marca y quedar pixel-consistente con el inicio.",
+  "resolucion_nota": "Los 3 stills son flux/kontext a 1024x576 (landscape_16_9). finalize_frames.py tomo la resolucion del dolor (1024x576) como referencia. El still de dolor es la imagen flux directa (no un frame de video).",
+  "images": {
+    "dolor": {
+      "archivo": "images/E11_still_dolor.png",
+      "rol": "still final de la condicion DOLOR: mano abierta palma arriba, jeringa vertical desde arriba, aguja fina entrando en la piel cerca de la base de la palma/muneca, piel intacta (sin agujero ni sangre)",
+      "modelo": "fal-ai/flux-kontext/dev (edicion de aguja larga sobre ancla flux/dev)",
+      "archivo_work": "work/E11_inyeccion_muneca/candidates/start_closeup.jpg (Kontext seed 2002, guidance 4.0)",
+      "edicion_final": "El still de dolor FINAL es una edicion Kontext del ancla flux: se alargo la aguja y se hundio la punta en un hoyuelo suave de la piel (la version corta original se leia poco como 'inyeccion'). A pedido de Tomas (2026-06-14) para que el video muestre una insercion mas larga/clara. Misma mano pixel-identica al inicio (clave para que el video no deforme la mano). Opcion 'sutil' (s2002) elegida por Tomas sobre la de hoyuelo marcado (s1001, archivada).",
+      "ancla_flux_dev": {
+        "modelo": "fal-ai/flux/dev",
+        "tag_ledger": "e11d_a_topvert_s23",
+        "seed": 23,
+        "guidance_scale": 4.5,
+        "steps": 30,
+        "size": "landscape_16_9",
+        "archivo_work": "work/E11_inyeccion_muneca/selected/e11d_a_topvert_s23.jpg",
+        "prompt": "Extreme close-up macro photograph of the inner wrist of a human hand during a clinical injection. A medical hypodermic syringe is held vertically and points straight down; its thin steel needle has just slid under the smooth skin of the inner wrist at a shallow angle. Anatomically correct human hand and wrist, realistic natural skin texture with fine pores. The skin is smooth, even-toned, intact and unbroken, closing snugly around the thin needle with NO hole, NO opening, NO open wound, NO gash, NO blood and NO redness - just the clean thin needle entering the skin. Razor-sharp focus on the point where the needle meets the skin. 8k, raw documentary medical style, soft clinical lighting, shallow depth of field.",
+        "nota": "Ancla validada primero por Tomas (aguja corta, sin agujero). El inicio y el control se derivaron de esta ancla (sin la aguja). Para el still de dolor FINAL se le alargo la aguja con Kontext (ver edicion_final)."
+      },
+      "edicion_aguja_larga": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "anchor": "work/E11_inyeccion_muneca/selected/e11d_a_topvert_s23.jpg",
+        "seed": 2002,
+        "guidance_scale": 4.0,
+        "prompt": "Keep this photograph EXACTLY the same, pixel for pixel - same hand, same palm-up pose, same fingers, same wrist, same framing, same lighting, same teal background, same syringe body. Change ONLY the needle: make the thin steel needle clearly LONGER, and press its tip firmly DOWN into the skin at the base of the palm so the skin is pushed inward and dimpled in a small soft indentation around the needle, as if the long needle is sinking into the hand and the syringe sits lower. The skin stays smooth and intact - NO hole, NO cut, NO red dot, NO blood, NO wound - just a soft dimple where the long needle presses in."
+      }
+    },
+    "control": {
+      "archivo": "images/E11_still_control.png",
+      "rol": "still final de la condicion CONTROL: hisopo de algodon vertical desde arriba, punta blanda de algodon apoyada en el mismo punto donde entra la aguja, sin pinchar ni danar",
+      "objeto_neutro": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 13,
+        "guidance_scale": 3.0,
+        "steps": 30,
+        "archivo_work": "work/E11_inyeccion_muneca/candidates/control.jpg",
+        "anchor": "work/E11_inyeccion_muneca/candidates/clean.jpg (el INICIO limpio)",
+        "metodo": "Se AGREGO el hisopo sobre el inicio limpio (no sobre el dolor) para heredar la piel sin marca y quedar pixel-consistente con el inicio. Edicion local Kontext: hisopo vertical, punta de algodon blanca apoyada en el mismo punto (base de la palma), mango de madera hacia arriba fuera de cuadro. Tomas eligio la seed 13 (punta redondeada) sobre la seed 7 (punta cilindrica, archivada en candidates/_archive/control__v04.jpg).",
+        "prompt": "Edit this photograph: add an ordinary small cotton swab (a thin cotton-tipped applicator, the kind used in clinics) held vertically and pointing straight down, with a MODEST realistic small white cotton bud tip - not oversized, roughly the width of the thin stick - resting gently and flat against the skin of the open palm-up hand at the exact spot where a needle would enter, near the base of the palm. The thin plain stick handle extends straight up and out of the top of the frame. The soft cotton rests lightly and causes no harm; the skin stays smooth, flat, even-toned and unbroken with NO mark, NO dent and NO redness. Keep everything else EXACTLY the same: same hand, same palm-up pose, same fingers, same wrist, same framing, same lighting, same pale teal clinical background."
+      },
+      "racional": "Contraste objeto + desenlace con identico layout: dolor = aguja que entra (punzante) vs control = hisopo de algodon que apoya su punta blanda en el MISMO punto (inofensivo). Misma silueta de aproximacion (objeto esbelto vertical que entra por arriba), misma mano/encuadre/luz. Hisopo de algodon como objeto neutro, igual que E07 (coherencia clinica en la categoria inyeccion)."
+    },
+    "inicio": {
+      "archivo": "images/E11_still_inicio.png",
+      "rol": "inicio compartido de ambos videos (mano abierta palma arriba, limpia, SIN objeto y SIN marca)",
+      "clean_kontext": {
+        "modelo": "fal-ai/flux-kontext/dev",
+        "seed": 1001,
+        "guidance_scale": 2.5,
+        "steps": 30,
+        "archivo_work": "work/E11_inyeccion_muneca/candidates/clean.jpg",
+        "anchor": "work/E11_inyeccion_muneca/selected/e11d_a_topvert_s23.jpg (el dolor validado)",
+        "prompt": "Keep this photograph exactly the same - same hand held palm-up, same fingers, same wrist, same camera angle, same lighting, same teal clinical background. Remove the syringe and the steel needle COMPLETELY, and remove the small red dot, the puncture point and any redness or mark. The hand now rests calmly palm-up and bare: the skin is smooth, flat, even-toned, healthy, intact and unbroken, with NO needle, NO syringe, NO mark, NO red dot and NO redness anywhere in the image. Just the bare clean open hand resting still.",
+        "resultado": "Kontext quito la jeringa y el punto rojo de la entrada en una sola pasada; piel de la palma lisa e intacta. A diferencia de E07, NO hizo falta el paso de inpaint por mascara (el punto era chico, no un dimple profundo). Validado por Tomas como inicio."
+      }
+    }
+  },
+  "videos": {
+    "estado": "completo",
+    "modelo": "fal-ai/kling-video/v3/pro/image-to-video",
+    "duracion_s": 5,
+    "audio": false,
+    "tier": "v3pro",
+    "costo_usd_video": 1.12,
+    "costo_usd_video_nota": "dolor $0.56 + control $0.56 = $1.12 (5s c/u a $0.112/s, sin audio).",
+    "estructura": "inicio compartido = still 'inicio' (mano palma-arriba limpia, sin objeto); el objeto ENTRA durante el clip",
+    "motion_prompts_archivo": "work/E11_inyeccion_muneca/motion.json",
+    "dolor": {
+      "archivo": "videos/E11_video_dolor.mp4",
+      "start_frame": "images/E11_still_inicio.png (mano palma-arriba limpia)",
+      "end_frame": "images/E11_still_dolor.png (aguja entrando en la palma/muneca)",
+      "motion_prompt": "Hold the tight close-up on the open palm-up hand. From the top, a syringe fitted with a VERY LONG thin steel needle descends into view, the long needle fully extended and pointing straight down. The long needle reaches the skin at the base of the palm and then drives firmly downward, pushing one to two centimetres DEEP into the hand: the whole syringe travels down and the skin dents and dimples inward around the needle as more and more of the long needle sinks under the skin. A strong, deliberate, deep insertion - the needle clearly penetrating deeper and deeper into the palm until planted. The skin stays intact around the needle, no blood, no wound.",
+      "cfg_scale": 0.8,
+      "motion_revision_nota": "Re-render iterado a pedido de Tomas (2026-06-14) para insercion mas larga/clara, SIN tocar el control. v1: poca insercion. v2: aguja larga, ~0.5cm. v3: prompt agresivo + cfg 0.8. v4: aguja muy larga + cfg 1.0 (mismo still corto -> insercion capada en superficie). v5 (FINAL): se cambio el STILL FINAL de dolor a una edicion Kontext con aguja LARGA y punta hundida en un hoyuelo (s2002, validado por Tomas como imagen ANTES de gastar en video), y se re-genero el video con cfg 0.8 -> la aguja larga baja desde un gap y se clava en el hoyuelo, leyendose la insercion mas clara. El frame inicial sigue siendo el inicio limpio compartido (no se puede meter aguja ahi sin romper el video de control). Versiones de video e imagen previas archivadas en _archive/ (NO-OVERWRITE).",
+      "sellado": true
+    },
+    "control": {
+      "archivo": "videos/E11_video_control.mp4",
+      "start_frame": "images/E11_still_inicio.png (mano palma-arriba limpia)",
+      "end_frame": "images/E11_still_control.png (hisopo de algodon apoyado, sin pinchar)",
+      "motion_prompt": "Hold the tight close-up on the open palm-up hand resting calm. An ordinary cotton swab enters from the top and comes to rest with its soft white cotton tip pressing gently on the skin near the base of the palm - in the same spot the needle would enter - without causing any harm. The skin stays smooth, intact and unharmed. A calm, safe, soft and painless movement, no needle, no piercing, no mark.",
+      "sellado": true
+    }
+  },
+  "frames_video": {
+    "dolor": "frames/E11_frame_dolor_1..6.png (frame 6 = still de dolor)",
+    "control": "frames/E11_frame_control_1..6.png (frame 6 = still de control)"
+  },
+  "costo_usd_aprox_imagenes": 0.5,
+  "costo_usd_aprox_imagenes_nota": "flux/dev dolor: 1a tanda 8 escenas + 2a tanda 8 estilo A (~$0.4) + Kontext clean (~$0.025) + Kontext control x2 (~$0.05). Video pendiente (~$1.12). Total proyectado del estimulo ~$1.6.",
+  "moderacion_nota": "Escena clinica de bajo gore, framing 'aguja que entra, sin sangre ni agujero'. flux/dev sin moderacion de entrada (par dolor); derivaciones con Kontext (piel limpia). Sin reframe de 'imminent threat' necesario."
+}
